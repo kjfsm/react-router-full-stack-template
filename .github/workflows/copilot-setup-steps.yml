@@ -1,0 +1,113 @@
+---
+name: Remix フルスタックテンプレート セットアップ
+description: Remix フルスタックテンプレートの完全なセットアップ手順
+
+steps:
+  - name: 初期セットアップ
+    description: テンプレートのクローンと設定
+    run: |
+      # リポジトリをクローンする
+      git clone <repository-url>
+      cd remix-full-stack-template
+
+      # 環境設定ファイルをコピー
+      cp .env.example .env
+
+      # 依存関係をインストール
+      yarn install
+
+  - name: データベースセットアップ
+    description: PostgreSQLデータベースの設定
+    run: |
+      # Dockerでデータベースを起動
+      docker-compose up -d db
+
+      # Prismaクライアントを生成
+      yarn db:generate
+
+      # データベーススキーマをプッシュ
+      yarn db:push
+
+      # オプション - データベースをシード
+      yarn db:seed
+
+  - name: 認証セットアップ
+    description: OAuthプロバイダーの設定
+    instructions: |
+      Google OAuthアプリの作成（オプション）:
+      1. https://console.cloud.google.com/ にアクセス
+      2. 新しいプロジェクトを作成するか既存のプロジェクトを選択
+      3. Google+ APIを有効化
+      4. OAuth 2.0認証情報を作成
+      5. 承認済みリダイレクトURIを追加: http://localhost:3000/auth/google/callback
+      6. クライアントIDとシークレットを.envにコピー
+
+      GitHub OAuthアプリの作成（オプション）:
+      1. https://github.com/settings/developers にアクセス
+      2. 開発者設定 > OAuth Appsに移動
+      3. 新しいOAuth Appを作成
+      4. 認証コールバックURLを設定: http://localhost:3000/auth/github/callback
+      5. クライアントIDとシークレットを.envにコピー
+
+  - name: 開発環境
+    description: 開発ツールのセットアップ
+    run: |
+      # DevContainerで開く（推奨）
+      code .
+      # VS Codeがコンテナで再度開くかプロンプトします
+
+      # またはローカルで開発サーバーを起動
+      yarn dev
+
+      # オプション - Prisma Studioを起動
+      yarn db:studio
+
+  - name: テスト環境セットアップ
+    description: テスト環境の設定
+    run: |
+      # Playwrightブラウザをインストール
+      npx playwright install
+
+      # ユニットテストを実行
+      yarn test
+
+      # E2Eテストを実行
+      yarn test:e2e
+
+environment:
+  - name: DATABASE_URL
+    description: PostgreSQL接続文字列
+    default: postgresql://postgres:postgres@localhost:5432/remixapp_dev
+    required: true
+
+  - name: SESSION_SECRET
+    description: セッション暗号化用シークレット
+    default: your-session-secret-change-this-in-production
+    required: true
+
+  - name: GOOGLE_CLIENT_ID
+    description: Google OAuthクライアントID
+    required: false
+
+  - name: GOOGLE_CLIENT_SECRET
+    description: Google OAuthクライアントシークレット
+    required: false
+
+  - name: GITHUB_CLIENT_ID
+    description: GitHub OAuthクライアントID
+    required: false
+
+  - name: GITHUB_CLIENT_SECRET
+    description: GitHub OAuthクライアントシークレット
+    required: false
+
+  - name: FIREBASE_PROJECT_ID
+    description: デプロイ用FirebaseプロジェクトID
+    required: false
+
+commands:
+  dev: yarn dev
+  build: yarn build
+  start: yarn start
+  test: yarn test
+  lint: yarn lint
