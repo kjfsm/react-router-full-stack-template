@@ -1,238 +1,238 @@
-name: Remix Full Stack Template Setup
-description: Complete setup steps for the Remix full-stack template
+name: Remix フルスタックテンプレート セットアップ
+description: Remix フルスタックテンプレートの完全なセットアップ手順
 
 steps:
-  - name: Initial Setup
-    description: Clone and configure the template
+  - name: 初期セットアップ
+    description: テンプレートのクローンと設定
     steps:
-      - description: Clone the repository
+      - description: リポジトリをクローンする
         command: git clone <repository-url>
         
-      - description: Navigate to project directory
+      - description: プロジェクトディレクトリに移動
         command: cd remix-full-stack-template
         
-      - description: Copy environment file
+      - description: 環境設定ファイルをコピー
         command: cp .env.example .env
         
-      - description: Install dependencies
+      - description: 依存関係をインストール
         command: yarn install
 
-  - name: Database Setup
-    description: Configure PostgreSQL database
+  - name: データベースセットアップ
+    description: PostgreSQLデータベースの設定
     steps:
-      - description: Start database with Docker
+      - description: Dockerでデータベースを起動
         command: docker-compose up -d db
         
-      - description: Generate Prisma client
+      - description: Prismaクライアントを生成
         command: yarn db:generate
         
-      - description: Push database schema
+      - description: データベーススキーマをプッシュ
         command: yarn db:push
         
-      - description: Optional - Seed database
+      - description: オプション - データベースをシード
         command: yarn db:seed
 
-  - name: Authentication Setup
-    description: Configure OAuth providers
+  - name: 認証セットアップ
+    description: OAuthプロバイダーの設定
     steps:
-      - description: Create Google OAuth app (optional)
+      - description: Google OAuthアプリを作成（オプション）
         url: https://console.cloud.google.com/
         notes: |
-          1. Create new project or select existing
-          2. Enable Google+ API
-          3. Create OAuth 2.0 credentials
-          4. Add authorized redirect URI: http://localhost:3000/auth/google/callback
-          5. Copy Client ID and Secret to .env
+          1. 新しいプロジェクトを作成するか既存のプロジェクトを選択
+          2. Google+ APIを有効化
+          3. OAuth 2.0認証情報を作成
+          4. 承認済みリダイレクトURIを追加: http://localhost:3000/auth/google/callback
+          5. クライアントIDとシークレットを.envにコピー
         
-      - description: Create GitHub OAuth app (optional)
+      - description: GitHub OAuthアプリを作成（オプション）
         url: https://github.com/settings/developers
         notes: |
-          1. Go to Developer settings > OAuth Apps
-          2. Create new OAuth App
-          3. Set Authorization callback URL: http://localhost:3000/auth/github/callback
-          4. Copy Client ID and Secret to .env
+          1. 開発者設定 > OAuth Appsに移動
+          2. 新しいOAuth Appを作成
+          3. 認証コールバックURLを設定: http://localhost:3000/auth/github/callback
+          4. クライアントIDとシークレットを.envにコピー
 
-  - name: Development Environment
-    description: Set up development tools
+  - name: 開発環境
+    description: 開発ツールのセットアップ
     steps:
-      - description: Open in DevContainer (recommended)
+      - description: DevContainerで開く（推奨）
         command: code .
-        notes: VS Code will prompt to reopen in container
+        notes: VS Codeがコンテナで再度開くかプロンプトします
         
-      - description: Or start development server locally
+      - description: またはローカルで開発サーバーを起動
         command: yarn dev
         
-      - description: Optional - Start Prisma Studio
+      - description: オプション - Prisma Studioを起動
         command: yarn db:studio
 
-  - name: Testing Setup
-    description: Configure testing environment
+  - name: テスト環境セットアップ
+    description: テスト環境の設定
     steps:
-      - description: Install Playwright browsers
+      - description: Playwrightブラウザをインストール
         command: npx playwright install
         
-      - description: Run unit tests
+      - description: ユニットテストを実行
         command: yarn test
         
-      - description: Run E2E tests
+      - description: E2Eテストを実行
         command: yarn test:e2e
 
-  - name: Production Setup
-    description: Configure for production deployment
+  - name: 本番環境セットアップ
+    description: 本番デプロイメントの設定
     steps:
-      - description: Set up Firebase project
+      - description: Firebaseプロジェクトをセットアップ
         url: https://console.firebase.google.com/
         notes: |
-          1. Create new Firebase project
-          2. Enable Hosting and Functions
-          3. Install Firebase CLI: npm install -g firebase-tools
-          4. Login: firebase login
-          5. Initialize: firebase init
+          1. 新しいFirebaseプロジェクトを作成
+          2. HostingとFunctionsを有効化
+          3. Firebase CLIをインストール: npm install -g firebase-tools
+          4. ログイン: firebase login
+          5. 初期化: firebase init
         
-      - description: Configure GitHub Secrets
+      - description: GitHubシークレットを設定
         notes: |
-          Add these secrets to your GitHub repository:
-          - DATABASE_URL (production database)
-          - SESSION_SECRET (random string)
-          - GOOGLE_CLIENT_ID (if using Google auth)
-          - GOOGLE_CLIENT_SECRET (if using Google auth)
-          - GITHUB_CLIENT_ID (if using GitHub auth)
-          - GITHUB_CLIENT_SECRET (if using GitHub auth)
-          - FIREBASE_SERVICE_ACCOUNT (Firebase service account JSON)
-          - FIREBASE_PROJECT_ID (Firebase project ID)
+          GitHubリポジトリに以下のシークレットを追加:
+          - DATABASE_URL (本番データベース)
+          - SESSION_SECRET (ランダム文字列)
+          - GOOGLE_CLIENT_ID (Google認証を使用する場合)
+          - GOOGLE_CLIENT_SECRET (Google認証を使用する場合)
+          - GITHUB_CLIENT_ID (GitHub認証を使用する場合)
+          - GITHUB_CLIENT_SECRET (GitHub認証を使用する場合)
+          - FIREBASE_SERVICE_ACCOUNT (FirebaseサービスアカウントJSON)
+          - FIREBASE_PROJECT_ID (FirebaseプロジェクトID)
         
-      - description: Deploy to production
+      - description: 本番環境にデプロイ
         command: git push origin main
-        notes: GitHub Actions will automatically deploy
+        notes: GitHub Actionsが自動的にデプロイします
 
-  - name: Optional Enhancements
-    description: Additional features you can add
+  - name: オプション機能拡張
+    description: 追加可能な機能
     steps:
-      - description: Set up Terraform for infrastructure
+      - description: インフラ用Terraformをセットアップ
         notes: |
-          1. Install Terraform
-          2. Configure providers (AWS, GCP, etc.)
-          3. Define infrastructure as code
-          4. Add to CI/CD pipeline
+          1. Terraformをインストール
+          2. プロバイダー（AWS、GCPなど）を設定
+          3. Infrastructure as Codeを定義
+          4. CI/CDパイプラインに追加
         
-      - description: Add monitoring and logging
+      - description: モニタリングとログを追加
         notes: |
-          Consider adding:
-          - Sentry for error tracking
-          - LogRocket for session replay
-          - Analytics tools
+          以下の追加を検討:
+          - エラートラッキング用Sentry
+          - セッションリプレイ用LogRocket
+          - アナリティクスツール
         
-      - description: Add additional authentication providers
+      - description: 追加の認証プロバイダーを追加
         notes: |
-          The template supports adding more OAuth providers:
-          - Discord, Twitter, Facebook, etc.
-          - Check remix-auth documentation
+          テンプレートはより多くのOAuthプロバイダーの追加をサポート:
+          - Discord、Twitter、Facebookなど
+          - remix-authドキュメントを確認
 
 environment_variables:
   required:
     - name: DATABASE_URL
-      description: PostgreSQL connection string
+      description: PostgreSQL接続文字列
       example: postgresql://postgres:postgres@localhost:5432/remixapp_dev
     
     - name: SESSION_SECRET
-      description: Secret for session encryption
+      description: セッション暗号化用シークレット
       example: your-session-secret-change-this-in-production
   
   optional:
     - name: GOOGLE_CLIENT_ID
-      description: Google OAuth client ID
+      description: Google OAuthクライアントID
     
     - name: GOOGLE_CLIENT_SECRET
-      description: Google OAuth client secret
+      description: Google OAuthクライアントシークレット
     
     - name: GITHUB_CLIENT_ID
-      description: GitHub OAuth client ID
+      description: GitHub OAuthクライアントID
     
     - name: GITHUB_CLIENT_SECRET
-      description: GitHub OAuth client secret
+      description: GitHub OAuthクライアントシークレット
     
     - name: FIREBASE_PROJECT_ID
-      description: Firebase project ID for deployment
+      description: デプロイ用FirebaseプロジェクトID
 
 development_commands:
   - command: yarn dev
-    description: Start development server
+    description: 開発サーバーを起動
   
   - command: yarn build
-    description: Build for production
+    description: 本番用ビルド
   
   - command: yarn start
-    description: Start production server
+    description: 本番サーバーを起動
   
   - command: yarn lint
-    description: Run linter
+    description: リンターを実行
   
   - command: yarn test
-    description: Run unit tests
+    description: ユニットテストを実行
   
   - command: yarn test:e2e
-    description: Run E2E tests
+    description: E2Eテストを実行
   
   - command: yarn db:generate
-    description: Generate Prisma client
+    description: Prismaクライアントを生成
   
   - command: yarn db:push
-    description: Push database schema changes
+    description: データベーススキーマ変更をプッシュ
   
   - command: yarn db:migrate
-    description: Create and run migrations
+    description: マイグレーションを作成・実行
   
   - command: yarn db:studio
-    description: Open Prisma Studio
+    description: Prisma Studioを開く
 
 troubleshooting:
   common_issues:
-    - issue: Database connection error
+    - issue: データベース接続エラー
       solution: |
-        1. Ensure PostgreSQL is running
-        2. Check DATABASE_URL in .env
-        3. Verify database exists
-        4. Run: docker-compose up -d db
+        1. PostgreSQLが実行中であることを確認
+        2. .envのDATABASE_URLを確認
+        3. データベースが存在することを確認
+        4. 実行: docker-compose up -d db
     
-    - issue: Authentication not working
+    - issue: 認証が動作しない
       solution: |
-        1. Check OAuth credentials in .env
-        2. Verify callback URLs match
-        3. Ensure OAuth apps are configured correctly
-        4. Check browser network tab for errors
+        1. .envのOAuth認証情報を確認
+        2. コールバックURLが一致することを確認
+        3. OAuthアプリが正しく設定されていることを確認
+        4. ブラウザのネットワークタブでエラーを確認
     
-    - issue: Build failures
+    - issue: ビルドが失敗する
       solution: |
-        1. Check TypeScript errors
-        2. Verify all imports are correct
-        3. Run: yarn typecheck
-        4. Check for missing dependencies
+        1. TypeScriptエラーを確認
+        2. すべてのインポートが正しいことを確認
+        3. 実行: yarn typecheck
+        4. 不足している依存関係を確認
     
-    - issue: Tests failing
+    - issue: テストが失敗する
       solution: |
-        1. Ensure test database is running
-        2. Check test environment variables
-        3. Run tests individually to isolate issues
-        4. Clear test data between runs
+        1. テストデータベースが実行中であることを確認
+        2. テスト環境変数を確認
+        3. テストを個別に実行して問題を特定
+        4. 実行間でテストデータをクリア
 
 next_steps:
-  - description: Customize the template for your needs
+  - description: ニーズに合わせてテンプレートをカスタマイズ
     tasks:
-      - Modify the todo schema for your data model
-      - Add more authentication providers
-      - Customize the UI design
-      - Add additional routes and features
+      - データモデル用にtodoスキーマを変更
+      - 認証プロバイダーを追加
+      - UIデザインをカスタマイズ
+      - 追加のルートと機能を追加
   
-  - description: Deploy to production
+  - description: 本番環境にデプロイ
     tasks:
-      - Set up production database
-      - Configure production environment variables
-      - Set up monitoring and logging
-      - Add custom domain
+      - 本番データベースをセットアップ
+      - 本番環境変数を設定
+      - モニタリングとログを設定
+      - カスタムドメインを追加
   
-  - description: Scale and optimize
+  - description: スケールと最適化
     tasks:
-      - Add caching strategies
-      - Implement error boundaries
-      - Add performance monitoring
-      - Consider CDN for static assets
+      - キャッシュ戦略を追加
+      - エラーバウンダリを実装
+      - パフォーマンスモニタリングを追加
+      - 静的アセット用CDNを検討
