@@ -23,8 +23,7 @@ WORKDIR /workspace
 # Install global tools
 RUN npm install -g typescript
 
-# Set up non-root user
-RUN addgroup -g 1000 node && adduser -u 1000 -G node -s /bin/bash -D node
+# Use existing node user from base image
 USER node
 
 # Default command
