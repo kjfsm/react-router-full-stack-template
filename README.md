@@ -109,8 +109,8 @@ OAuth認証を有効にするには、プロバイダーを設定して`.env`に
 ├── prisma/
 │   ├── schema.prisma       # データベーススキーマ
 │   └── seed.ts            # データベースシーディング
-├── e2e/                   # Playwright エンドツーエンドテスト
 ├── tests/                 # テストユーティリティとセットアップ
+│   └── e2e/               # Playwright エンドツーエンドテスト
 ├── .devcontainer/         # DevContainer設定
 ├── .github/workflows/     # GitHub Actions CI/CD
 └── docker-compose*.yml    # Docker設定
