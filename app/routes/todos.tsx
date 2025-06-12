@@ -3,7 +3,6 @@ import { json } from "@remix-run/node";
 import { Form, useFetcher, useLoaderData } from "@remix-run/react";
 import { Plus, Trash2 } from "lucide-react";
 
-import type { Todo, User } from "~/types";
 import { Navbar } from "~/components/navbar";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -11,6 +10,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { authenticator } from "~/lib/auth.server";
 import { prisma } from "~/lib/db.server";
+import type { Todo, User } from "~/types";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {

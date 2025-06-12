@@ -1,6 +1,6 @@
-import type { User } from "~/types";
 import { Form, Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
+import type { User } from "~/types";
 
 interface NavbarProps {
   user: User;

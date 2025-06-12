@@ -1,7 +1,7 @@
-import type { User } from "~/types";
 import { Authenticator } from "remix-auth";
 import { GitHubStrategy } from "remix-auth-github";
 import { GoogleStrategy } from "remix-auth-google";
+import type { User } from "~/types";
 
 import { prisma } from "./db.server";
 import { sessionStorage } from "./session.server";
