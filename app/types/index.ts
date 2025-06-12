@@ -1,4 +1,6 @@
-// User type to match Prisma schema when client is not generated
+/**
+ * Prismaクライアントが生成されていない場合のPrismaスキーマに対応するユーザー型
+ */
 export interface User {
   id: string;
   email: string;
@@ -10,7 +12,9 @@ export interface User {
   updatedAt: string | Date;
 }
 
-// Todo type to match Prisma schema when client is not generated
+/**
+ * Prismaクライアントが生成されていない場合のPrismaスキーマに対応するTodo型
+ */
 export interface Todo {
   id: string;
   title: string;

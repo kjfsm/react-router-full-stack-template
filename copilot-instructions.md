@@ -1,152 +1,152 @@
-# GitHub Copilot Instructions for Remix Full Stack Template
+# Remix フルスタックテンプレート用 GitHub Copilot 説明書
 
-## Project Overview
+## プロジェクト概要
 
-This is a production-ready Remix full-stack template with modern development practices. The stack includes:
+これはモダンな開発プラクティスを備えた本格的なRemixフルスタックテンプレートです。技術スタックには以下が含まれます：
 
-- **Framework**: Remix with TypeScript and Vite
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: remix-auth with Google and GitHub OAuth
-- **UI**: Tailwind CSS with shadcn/ui components
-- **Testing**: Vitest (unit) and Playwright (e2e)
-- **Development**: DevContainer with Docker support
-- **Deployment**: Firebase Hosting with GitHub Actions CI/CD
-- **Code Quality**: Biome for linting and formatting
+- **フレームワーク**: TypeScriptとViteを使用したRemix
+- **データベース**: Prisma ORMを使用したPostgreSQL
+- **認証**: GoogleとGitHub OAuthを使用したremix-auth
+- **UI**: shadcn/uiコンポーネントを使用したTailwind CSS
+- **テスト**: Vitest（ユニット）とPlaywright（e2e）
+- **開発**: Dockerサポート付きDevContainer
+- **デプロイメント**: GitHub Actions CI/CDを使用したFirebase Hosting
+- **コード品質**: リントとフォーマット用Biome
 
-## Architecture Principles
+## アーキテクチャ原則
 
-### Remix Philosophy
-- Server-side rendering by default
-- Progressive enhancement
-- Web standards over abstractions
-- Data mutations through forms
-- Nested routing for better UX
+### Remix哲学
+- デフォルトでサーバーサイドレンダリング
+- プログレッシブエンハンスメント
+- 抽象化よりもWeb標準
+- フォームを通じたデータミューテーション
+- より良いUXのためのネストルーティング
 
-### Code Organization
+### コード構成
 ```
 app/
-├── components/        # Reusable UI components
-│   └── ui/           # shadcn/ui components
-├── lib/              # Server-side utilities
-├── routes/           # Remix routes (file-based routing)
-├── styles/           # Global styles
-└── utils/            # Client-side utilities
+├── components/        # 再利用可能なUIコンポーネント
+│   └── ui/           # shadcn/uiコンポーネント
+├── lib/              # サーバーサイドユーティリティ
+├── routes/           # Remixルート（ファイルベースルーティング）
+├── styles/           # グローバルスタイル
+└── utils/            # クライアントサイドユーティリティ
 ```
 
-### Development Patterns
-- Use `*.server.ts` suffix for server-only code
-- Prefer `loader` functions for data fetching
-- Use `action` functions for mutations
-- Leverage `useFetcher` for optimistic updates
-- Follow Remix's data flow patterns
+### 開発パターン
+- サーバー専用コードには`*.server.ts`サフィックスを使用
+- データ取得には`loader`関数を優先
+- ミューテーションには`action`関数を使用
+- 楽観的更新には`useFetcher`を活用
+- Remixのデータフローパターンに従う
 
-## Key Guidelines
+## 主要ガイドライン
 
-### Authentication
-- Users are authenticated via OAuth (Google/GitHub)
-- Use `authenticator.isAuthenticated()` in loaders
-- Redirect unauthenticated users to `/login`
-- Store user data in Prisma database
+### 認証
+- ユーザーはOAuth（Google/GitHub）で認証
+- ローダーで`authenticator.isAuthenticated()`を使用
+- 未認証ユーザーを`/login`にリダイレクト
+- ユーザーデータをPrismaデータベースに保存
 
-### Database
-- Use Prisma for type-safe database operations
-- Import from `~/lib/db.server.ts`
-- Always include user ID in queries for data isolation
-- Use transactions for complex operations
+### データベース
+- 型安全なデータベース操作にPrismaを使用
+- `~/lib/db.server.ts`からインポート
+- データ分離のためクエリに常にユーザーIDを含める
+- 複雑な操作にはトランザクションを使用
 
-### UI Components
-- Use shadcn/ui components from `~/components/ui/`
-- Prefer composition over prop drilling
-- Use Tailwind CSS for styling
-- Follow accessibility best practices
+### UIコンポーネント
+- `~/components/ui/`のshadcn/uiコンポーネントを使用
+- prop drillingよりもコンポジションを優先
+- スタイリングにTailwind CSSを使用
+- アクセシビリティのベストプラクティスに従う
 
-### Testing
-- Write unit tests with Vitest in `*.test.ts` files
-- E2E tests with Playwright in `e2e/` directory
-- Test user flows, not implementation details
-- Use Docker for consistent test environments
+### テスト
+- `*.test.ts`ファイルでVitestを使用してユニットテストを作成
+- `e2e/`ディレクトリでPlaywrightを使用してE2Eテスト
+- 実装詳細ではなくユーザーフローをテスト
+- 一貫したテスト環境にDockerを使用
 
-### Environment Setup
-- Copy `.env.example` to `.env` for local development
-- Configure OAuth providers for authentication
-- Use Docker Compose for local database
-- DevContainer provides consistent development environment
+### 環境セットアップ
+- ローカル開発用に`.env.example`を`.env`にコピー
+- 認証用にOAuthプロバイダーを設定
+- ローカルデータベース用にDocker Composeを使用
+- DevContainerが一貫した開発環境を提供
 
-## Common Tasks
+## 一般的なタスク
 
-### Adding a New Route
-1. Create file in `app/routes/`
-2. Export `loader` for data fetching
-3. Export `action` for mutations
-4. Export default component
-5. Add authentication if needed
+### 新しいルートの追加
+1. `app/routes/`にファイルを作成
+2. データ取得用に`loader`をエクスポート
+3. ミューテーション用に`action`をエクスポート
+4. デフォルトコンポーネントをエクスポート
+5. 必要に応じて認証を追加
 
-### Adding a New Component
-1. Create in `app/components/`
-2. Use TypeScript interfaces for props
-3. Follow shadcn/ui patterns for UI components
-4. Export from appropriate index file
+### 新しいコンポーネントの追加
+1. `app/components/`に作成
+2. プロパティ用にTypeScriptインターフェースを使用
+3. UIコンポーネントにはshadcn/uiパターンに従う
+4. 適切なインデックスファイルからエクスポート
 
-### Database Changes
-1. Update `prisma/schema.prisma`
-2. Run `yarn db:push` for development
-3. Run `yarn db:migrate` for production
-4. Update types will auto-generate
+### データベース変更
+1. `prisma/schema.prisma`を更新
+2. 開発環境では`yarn db:push`を実行
+3. 本番環境では`yarn db:migrate`を実行
+4. 型は自動生成されます
 
-### Deployment
-1. Push to main branch
-2. GitHub Actions runs tests
-3. Deploys to Firebase Hosting
-4. Configure environment variables in GitHub Secrets
+### デプロイメント
+1. mainブランチにプッシュ
+2. GitHub Actionsがテストを実行
+3. Firebase Hostingにデプロイ
+4. GitHub Secretsで環境変数を設定
 
-## Best Practices
+## ベストプラクティス
 
-### Code Style
-- Use Biome for formatting and linting
-- Prefer explicit imports over barrel exports
-- Use meaningful variable names
-- Add JSDoc comments for complex functions
+### コードスタイル
+- フォーマットとリント用にBiomeを使用
+- バレルエクスポートより明示的インポートを優先
+- 意味のある変数名を使用
+- 複雑な関数にはJSDocコメントを追加
 
-### Security
-- Never expose secrets in client code
-- Validate all user inputs
-- Use CSRF protection (built into Remix)
-- Sanitize database queries (Prisma handles this)
+### セキュリティ
+- クライアントコードでシークレットを公開しない
+- すべてのユーザー入力を検証
+- CSRF保護を使用（Remixに組み込み）
+- データベースクエリをサニタイズ（Prismaが処理）
 
-### Performance
-- Use Remix's built-in optimizations
-- Leverage browser caching
-- Optimize database queries
-- Use proper error boundaries
+### パフォーマンス
+- Remixの組み込み最適化を使用
+- ブラウザキャッシュを活用
+- データベースクエリを最適化
+- 適切なエラーバウンダリを使用
 
-### Accessibility
-- Use semantic HTML
-- Add ARIA labels where needed
-- Test with keyboard navigation
-- Ensure proper color contrast
+### アクセシビリティ
+- セマンティックHTMLを使用
+- 必要な場所にARIAラベルを追加
+- キーボードナビゲーションでテスト
+- 適切なカラーコントラストを確保
 
-## Development Workflow
+## 開発ワークフロー
 
-1. Open in DevContainer for consistent environment
-2. Copy `.env.example` to `.env` and configure
-3. Run `yarn dev` to start development server
-4. Make changes and test locally
-5. Run tests with `yarn test` and `yarn test:e2e`
-6. Create PR for review
-7. Deploy automatically on merge to main
+1. 一貫した環境のためにDevContainerで開く
+2. `.env.example`を`.env`にコピーして設定
+3. `yarn dev`を実行して開発サーバーを開始
+4. 変更を加えてローカルでテスト
+5. `yarn test`と`yarn test:e2e`でテストを実行
+6. レビュー用にPRを作成
+7. mainにマージで自動デプロイ
 
-## Troubleshooting
+## トラブルシューティング
 
-### Common Issues
-- **Database connection**: Check DATABASE_URL in .env
-- **Authentication**: Verify OAuth credentials and callback URLs
-- **Build errors**: Check TypeScript types and imports
-- **Test failures**: Ensure test database is running
+### よくある問題
+- **データベース接続**: .envのDATABASE_URLを確認
+- **認証**: OAuth認証情報とコールバックURLを確認
+- **ビルドエラー**: TypeScript型とインポートを確認
+- **テスト失敗**: テストデータベースが実行されていることを確認
 
-### Debugging
-- Use browser dev tools for client-side issues
-- Check server logs for backend problems
-- Use Prisma Studio for database inspection
-- Enable Remix dev tools in development
+### デバッグ
+- クライアントサイドの問題にはブラウザ開発者ツールを使用
+- バックエンドの問題にはサーバーログを確認
+- データベース検査にはPrisma Studioを使用
+- 開発環境でRemix開発者ツールを有効化
 
-Remember: This template prioritizes simplicity, type safety, and developer experience while following modern web standards and Remix conventions.
+注意：このテンプレートは、モダンなWeb標準とRemix規約に従いながら、シンプルさ、型安全性、開発者エクスペリエンスを優先します。

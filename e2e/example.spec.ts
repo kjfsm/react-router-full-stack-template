@@ -1,18 +1,16 @@
 import { expect, test } from "@playwright/test";
 
-test("homepage has title and links", async ({ page }) => {
+test("ホームページにタイトルとリンクがある", async ({ page }) => {
   await page.goto("/");
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Remix Full Stack Template/);
+  // タイトルに部分文字列が含まれることを期待
+  await expect(page).toHaveTitle(/Remix フルスタックテンプレート/);
 
-  // Expect page to contain the main heading
+  // ページにメインヘッディングが含まれることを期待
   await expect(
-    page.getByRole("heading", { name: "🚀 Remix Full Stack Template" })
+    page.getByRole("heading", { name: "🚀 Remix フルスタックテンプレート" })
   ).toBeVisible();
 
-  // Check for the demo link
-  await expect(
-    page.getByRole("link", { name: "View Todo Demo →" })
-  ).toBeVisible();
+  // デモリンクを確認
+  await expect(page.getByRole("link", { name: "デモを見る" })).toBeVisible();
 });

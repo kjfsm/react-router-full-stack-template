@@ -1,22 +1,22 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("Todo App", () => {
-  test("should allow users to view login page", async ({ page }) => {
+test.describe("Todoアプリ", () => {
+  test("ユーザーがログインページを表示できる", async ({ page }) => {
     await page.goto("/login");
 
-    // Check if login page loads correctly
+    // ログインページが正しく読み込まれるかチェック
     await expect(page.locator("h2")).toContainText("Sign in to your account");
     await expect(
       page.getByText("Welcome to the Remix Full Stack Template")
     ).toBeVisible();
   });
 
-  test("should display message when no auth providers are configured", async ({
+  test("認証プロバイダーが設定されていない場合にメッセージを表示する", async ({
     page,
   }) => {
     await page.goto("/login");
 
-    // Without auth env vars, should show configuration message
+    // 認証環境変数がない場合、設定メッセージを表示
     await expect(
       page.getByText("No authentication providers configured")
     ).toBeVisible();
@@ -25,29 +25,29 @@ test.describe("Todo App", () => {
     ).toBeVisible();
   });
 
-  test("should navigate between pages", async ({ page }) => {
+  test("ページ間をナビゲーションできる", async ({ page }) => {
     await page.goto("/");
 
-    // Check home page
+    // ホームページをチェック
     await expect(
-      page.getByRole("heading", { name: "🚀 Remix Full Stack Template" })
+      page.getByRole("heading", { name: "🚀 Remix フルスタックテンプレート" })
     ).toBeVisible();
 
-    // Navigate to login
-    await page.getByRole("link", { name: "Get Started →" }).click();
+    // ログインにナビゲート
+    await page.getByRole("link", { name: "始める →" }).click();
     await expect(page).toHaveURL("/login");
 
-    // Navigate back to home
+    // ホームに戻る
     await page.getByRole("link", { name: "← Back to home" }).click();
     await expect(page).toHaveURL("/");
   });
 
-  test("should redirect to login when accessing protected routes", async ({
+  test("保護されたルートにアクセスする際にログインにリダイレクトする", async ({
     page,
   }) => {
     await page.goto("/todos");
 
-    // Should redirect to login page
+    // ログインページにリダイレクトする
     await expect(page).toHaveURL("/login");
     await expect(page.locator("h2")).toContainText("Sign in to your account");
   });
