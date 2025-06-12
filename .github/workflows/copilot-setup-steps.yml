@@ -1,0 +1,57 @@
+---
+name: Copilot setup steps
+
+on:
+  workflow_dispatch: true
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Setup environment file
+        run: |
+          cp .env.example .env
+          echo "DATABASE_URL=$DATABASE_URL" >> .env
+          echo "SESSION_SECRET=$SESSION_SECRET" >> .env
+        env:
+          DATABASE_URL: >-
+            postgresql://postgres:postgres@localhost:5432/remixapp_dev
+          SESSION_SECRET: test-session-secret
+
+      - name: Setup PostgreSQL
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '15'
+          postgresql db: 'remixapp_dev'
+          postgresql user: 'postgres'
+          postgresql password: 'postgres'
+
+      - name: Generate Prisma client
+        run: yarn db:generate
+
+      - name: Push database schema
+        run: yarn db:push
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build application
+        run: yarn build
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Lint code
+        run: yarn lint
