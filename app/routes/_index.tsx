@@ -3,7 +3,10 @@ import type { MetaFunction } from "@remix-run/node";
 export const meta: MetaFunction = () => {
   return [
     { title: "Todo App - Remix Full Stack Template" },
-    { name: "description", content: "A full-stack todo application built with Remix" },
+    {
+      name: "description",
+      content: "A full-stack todo application built with Remix",
+    },
   ];
 };
 
@@ -63,12 +66,20 @@ export default function Index() {
             <p className="text-gray-600 mb-4">
               Ready to start building your next great application?
             </p>
-            <a
-              href="/todos"
-              className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              View Todo Demo →
-            </a>
+            <div className="space-x-4">
+              <a
+                href="/login"
+                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Get Started →
+              </a>
+              <a
+                href="/todos"
+                className="inline-block bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                View Demo
+              </a>
+            </div>
           </div>
         </div>
       </div>

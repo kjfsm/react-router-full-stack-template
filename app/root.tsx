@@ -10,11 +10,11 @@ import {
 
 import "./styles/globals.css";
 
-export const meta: MetaFunction = () => ({
-  charset: "utf-8",
-  title: "Remix Full Stack Template",
-  viewport: "width=device-width,initial-scale=1",
-});
+export const meta: MetaFunction = () => [
+  { charset: "utf-8" },
+  { title: "Remix Full Stack Template" },
+  { name: "viewport", content: "width=device-width,initial-scale=1" },
+];
 
 export default function App() {
   return (

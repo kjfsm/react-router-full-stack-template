@@ -7,4 +7,9 @@ export default defineConfig({
     setupFiles: ["./tests/setup.ts"],
     include: ["app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
   },
+  resolve: {
+    alias: {
+      "~": new URL("./app", import.meta.url).pathname,
+    },
+  },
 });

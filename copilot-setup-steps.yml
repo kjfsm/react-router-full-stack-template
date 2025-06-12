@@ -1,0 +1,238 @@
+name: Remix Full Stack Template Setup
+description: Complete setup steps for the Remix full-stack template
+
+steps:
+  - name: Initial Setup
+    description: Clone and configure the template
+    steps:
+      - description: Clone the repository
+        command: git clone <repository-url>
+        
+      - description: Navigate to project directory
+        command: cd remix-full-stack-template
+        
+      - description: Copy environment file
+        command: cp .env.example .env
+        
+      - description: Install dependencies
+        command: yarn install
+
+  - name: Database Setup
+    description: Configure PostgreSQL database
+    steps:
+      - description: Start database with Docker
+        command: docker-compose up -d db
+        
+      - description: Generate Prisma client
+        command: yarn db:generate
+        
+      - description: Push database schema
+        command: yarn db:push
+        
+      - description: Optional - Seed database
+        command: yarn db:seed
+
+  - name: Authentication Setup
+    description: Configure OAuth providers
+    steps:
+      - description: Create Google OAuth app (optional)
+        url: https://console.cloud.google.com/
+        notes: |
+          1. Create new project or select existing
+          2. Enable Google+ API
+          3. Create OAuth 2.0 credentials
+          4. Add authorized redirect URI: http://localhost:3000/auth/google/callback
+          5. Copy Client ID and Secret to .env
+        
+      - description: Create GitHub OAuth app (optional)
+        url: https://github.com/settings/developers
+        notes: |
+          1. Go to Developer settings > OAuth Apps
+          2. Create new OAuth App
+          3. Set Authorization callback URL: http://localhost:3000/auth/github/callback
+          4. Copy Client ID and Secret to .env
+
+  - name: Development Environment
+    description: Set up development tools
+    steps:
+      - description: Open in DevContainer (recommended)
+        command: code .
+        notes: VS Code will prompt to reopen in container
+        
+      - description: Or start development server locally
+        command: yarn dev
+        
+      - description: Optional - Start Prisma Studio
+        command: yarn db:studio
+
+  - name: Testing Setup
+    description: Configure testing environment
+    steps:
+      - description: Install Playwright browsers
+        command: npx playwright install
+        
+      - description: Run unit tests
+        command: yarn test
+        
+      - description: Run E2E tests
+        command: yarn test:e2e
+
+  - name: Production Setup
+    description: Configure for production deployment
+    steps:
+      - description: Set up Firebase project
+        url: https://console.firebase.google.com/
+        notes: |
+          1. Create new Firebase project
+          2. Enable Hosting and Functions
+          3. Install Firebase CLI: npm install -g firebase-tools
+          4. Login: firebase login
+          5. Initialize: firebase init
+        
+      - description: Configure GitHub Secrets
+        notes: |
+          Add these secrets to your GitHub repository:
+          - DATABASE_URL (production database)
+          - SESSION_SECRET (random string)
+          - GOOGLE_CLIENT_ID (if using Google auth)
+          - GOOGLE_CLIENT_SECRET (if using Google auth)
+          - GITHUB_CLIENT_ID (if using GitHub auth)
+          - GITHUB_CLIENT_SECRET (if using GitHub auth)
+          - FIREBASE_SERVICE_ACCOUNT (Firebase service account JSON)
+          - FIREBASE_PROJECT_ID (Firebase project ID)
+        
+      - description: Deploy to production
+        command: git push origin main
+        notes: GitHub Actions will automatically deploy
+
+  - name: Optional Enhancements
+    description: Additional features you can add
+    steps:
+      - description: Set up Terraform for infrastructure
+        notes: |
+          1. Install Terraform
+          2. Configure providers (AWS, GCP, etc.)
+          3. Define infrastructure as code
+          4. Add to CI/CD pipeline
+        
+      - description: Add monitoring and logging
+        notes: |
+          Consider adding:
+          - Sentry for error tracking
+          - LogRocket for session replay
+          - Analytics tools
+        
+      - description: Add additional authentication providers
+        notes: |
+          The template supports adding more OAuth providers:
+          - Discord, Twitter, Facebook, etc.
+          - Check remix-auth documentation
+
+environment_variables:
+  required:
+    - name: DATABASE_URL
+      description: PostgreSQL connection string
+      example: postgresql://postgres:postgres@localhost:5432/remixapp_dev
+    
+    - name: SESSION_SECRET
+      description: Secret for session encryption
+      example: your-session-secret-change-this-in-production
+  
+  optional:
+    - name: GOOGLE_CLIENT_ID
+      description: Google OAuth client ID
+    
+    - name: GOOGLE_CLIENT_SECRET
+      description: Google OAuth client secret
+    
+    - name: GITHUB_CLIENT_ID
+      description: GitHub OAuth client ID
+    
+    - name: GITHUB_CLIENT_SECRET
+      description: GitHub OAuth client secret
+    
+    - name: FIREBASE_PROJECT_ID
+      description: Firebase project ID for deployment
+
+development_commands:
+  - command: yarn dev
+    description: Start development server
+  
+  - command: yarn build
+    description: Build for production
+  
+  - command: yarn start
+    description: Start production server
+  
+  - command: yarn lint
+    description: Run linter
+  
+  - command: yarn test
+    description: Run unit tests
+  
+  - command: yarn test:e2e
+    description: Run E2E tests
+  
+  - command: yarn db:generate
+    description: Generate Prisma client
+  
+  - command: yarn db:push
+    description: Push database schema changes
+  
+  - command: yarn db:migrate
+    description: Create and run migrations
+  
+  - command: yarn db:studio
+    description: Open Prisma Studio
+
+troubleshooting:
+  common_issues:
+    - issue: Database connection error
+      solution: |
+        1. Ensure PostgreSQL is running
+        2. Check DATABASE_URL in .env
+        3. Verify database exists
+        4. Run: docker-compose up -d db
+    
+    - issue: Authentication not working
+      solution: |
+        1. Check OAuth credentials in .env
+        2. Verify callback URLs match
+        3. Ensure OAuth apps are configured correctly
+        4. Check browser network tab for errors
+    
+    - issue: Build failures
+      solution: |
+        1. Check TypeScript errors
+        2. Verify all imports are correct
+        3. Run: yarn typecheck
+        4. Check for missing dependencies
+    
+    - issue: Tests failing
+      solution: |
+        1. Ensure test database is running
+        2. Check test environment variables
+        3. Run tests individually to isolate issues
+        4. Clear test data between runs
+
+next_steps:
+  - description: Customize the template for your needs
+    tasks:
+      - Modify the todo schema for your data model
+      - Add more authentication providers
+      - Customize the UI design
+      - Add additional routes and features
+  
+  - description: Deploy to production
+    tasks:
+      - Set up production database
+      - Configure production environment variables
+      - Set up monitoring and logging
+      - Add custom domain
+  
+  - description: Scale and optimize
+    tasks:
+      - Add caching strategies
+      - Implement error boundaries
+      - Add performance monitoring
+      - Consider CDN for static assets

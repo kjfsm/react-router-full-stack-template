@@ -17,12 +17,14 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "db:seed": "tsx prisma/seed.ts",
+    "postinstall": "echo 'Skipping prisma generate - run manually: yarn db:generate'"
   },
   "dependencies": {
     "@remix-run/node": "^2.5.1",
     "@remix-run/react": "^2.5.1",
     "@remix-run/serve": "^2.5.1",
+    "@remix-run/server-runtime": "^2.5.1",
     "@remix-run/css-bundle": "^2.5.1",
     "@prisma/client": "^5.8.1",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -40,7 +42,7 @@
     "react-dom": "^18.2.0",
     "remix-auth": "^3.6.0",
     "remix-auth-github": "^1.7.0",
-    "remix-auth-google": "^2.1.0",
+    "remix-auth-google": "^1.1.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -50,10 +52,13 @@
     "@remix-run/dev": "^2.5.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "@vitest/ui": "^1.2.1",
     "autoprefixer": "^10.4.16",
+    "jsdom": "^24.0.0",
     "postcss": "^8.4.33",
     "prisma": "^5.8.1",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.1.6",
     "vite": "^5.0.0",
     "vitest": "^1.2.1"
@@ -61,5 +66,5 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@1.22.22"
 }
