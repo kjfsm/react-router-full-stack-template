@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker-host.sock
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/remixapp_dev
+      - SESSION_SECRET=dev-session-secret-change-in-production
+    ports:
+      - "3000:3000"
+      - "5555:5555"
+    depends_on:
+      - db
+    command: sleep infinity
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=remixapp_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile.test
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=test
+      - DATABASE_URL=postgresql://postgres:postgres@db-test:5432/remixapp_test
+    depends_on:
+      - db-test
+    profiles:
+      - test
+
+  db-test:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=remixapp_test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    profiles:
+      - test
+
+volumes:
+  postgres_dev_data:
+  postgres_test_data:
