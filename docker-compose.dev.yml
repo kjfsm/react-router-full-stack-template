@@ -2,7 +2,7 @@ services:
   devcontainer:
     image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
     volumes:
-      - ..:/workspaces/remix-full-stack-template:cached
+      - ./:/workspaces/remix-full-stack-template:cached
       - /var/run/docker.sock:/var/run/docker-host.sock
     environment:
       - NODE_ENV=development
