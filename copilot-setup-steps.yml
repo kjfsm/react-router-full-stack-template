@@ -1,238 +1,113 @@
+---
 name: Remix フルスタックテンプレート セットアップ
 description: Remix フルスタックテンプレートの完全なセットアップ手順
 
 steps:
   - name: 初期セットアップ
     description: テンプレートのクローンと設定
-    steps:
-      - description: リポジトリをクローンする
-        command: git clone <repository-url>
-        
-      - description: プロジェクトディレクトリに移動
-        command: cd remix-full-stack-template
-        
-      - description: 環境設定ファイルをコピー
-        command: cp .env.example .env
-        
-      - description: 依存関係をインストール
-        command: yarn install
+    run: |
+      # リポジトリをクローンする
+      git clone <repository-url>
+      cd remix-full-stack-template
+
+      # 環境設定ファイルをコピー
+      cp .env.example .env
+
+      # 依存関係をインストール
+      yarn install
 
   - name: データベースセットアップ
     description: PostgreSQLデータベースの設定
-    steps:
-      - description: Dockerでデータベースを起動
-        command: docker-compose up -d db
-        
-      - description: Prismaクライアントを生成
-        command: yarn db:generate
-        
-      - description: データベーススキーマをプッシュ
-        command: yarn db:push
-        
-      - description: オプション - データベースをシード
-        command: yarn db:seed
+    run: |
+      # Dockerでデータベースを起動
+      docker-compose up -d db
+
+      # Prismaクライアントを生成
+      yarn db:generate
+
+      # データベーススキーマをプッシュ
+      yarn db:push
+
+      # オプション - データベースをシード
+      yarn db:seed
 
   - name: 認証セットアップ
     description: OAuthプロバイダーの設定
-    steps:
-      - description: Google OAuthアプリを作成（オプション）
-        url: https://console.cloud.google.com/
-        notes: |
-          1. 新しいプロジェクトを作成するか既存のプロジェクトを選択
-          2. Google+ APIを有効化
-          3. OAuth 2.0認証情報を作成
-          4. 承認済みリダイレクトURIを追加: http://localhost:3000/auth/google/callback
-          5. クライアントIDとシークレットを.envにコピー
-        
-      - description: GitHub OAuthアプリを作成（オプション）
-        url: https://github.com/settings/developers
-        notes: |
-          1. 開発者設定 > OAuth Appsに移動
-          2. 新しいOAuth Appを作成
-          3. 認証コールバックURLを設定: http://localhost:3000/auth/github/callback
-          4. クライアントIDとシークレットを.envにコピー
+    instructions: |
+      Google OAuthアプリの作成（オプション）:
+      1. https://console.cloud.google.com/ にアクセス
+      2. 新しいプロジェクトを作成するか既存のプロジェクトを選択
+      3. Google+ APIを有効化
+      4. OAuth 2.0認証情報を作成
+      5. 承認済みリダイレクトURIを追加: http://localhost:3000/auth/google/callback
+      6. クライアントIDとシークレットを.envにコピー
+
+      GitHub OAuthアプリの作成（オプション）:
+      1. https://github.com/settings/developers にアクセス
+      2. 開発者設定 > OAuth Appsに移動
+      3. 新しいOAuth Appを作成
+      4. 認証コールバックURLを設定: http://localhost:3000/auth/github/callback
+      5. クライアントIDとシークレットを.envにコピー
 
   - name: 開発環境
     description: 開発ツールのセットアップ
-    steps:
-      - description: DevContainerで開く（推奨）
-        command: code .
-        notes: VS Codeがコンテナで再度開くかプロンプトします
-        
-      - description: またはローカルで開発サーバーを起動
-        command: yarn dev
-        
-      - description: オプション - Prisma Studioを起動
-        command: yarn db:studio
+    run: |
+      # DevContainerで開く（推奨）
+      code .
+      # VS Codeがコンテナで再度開くかプロンプトします
+
+      # またはローカルで開発サーバーを起動
+      yarn dev
+
+      # オプション - Prisma Studioを起動
+      yarn db:studio
 
   - name: テスト環境セットアップ
     description: テスト環境の設定
-    steps:
-      - description: Playwrightブラウザをインストール
-        command: npx playwright install
-        
-      - description: ユニットテストを実行
-        command: yarn test
-        
-      - description: E2Eテストを実行
-        command: yarn test:e2e
+    run: |
+      # Playwrightブラウザをインストール
+      npx playwright install
 
-  - name: 本番環境セットアップ
-    description: 本番デプロイメントの設定
-    steps:
-      - description: Firebaseプロジェクトをセットアップ
-        url: https://console.firebase.google.com/
-        notes: |
-          1. 新しいFirebaseプロジェクトを作成
-          2. HostingとFunctionsを有効化
-          3. Firebase CLIをインストール: npm install -g firebase-tools
-          4. ログイン: firebase login
-          5. 初期化: firebase init
-        
-      - description: GitHubシークレットを設定
-        notes: |
-          GitHubリポジトリに以下のシークレットを追加:
-          - DATABASE_URL (本番データベース)
-          - SESSION_SECRET (ランダム文字列)
-          - GOOGLE_CLIENT_ID (Google認証を使用する場合)
-          - GOOGLE_CLIENT_SECRET (Google認証を使用する場合)
-          - GITHUB_CLIENT_ID (GitHub認証を使用する場合)
-          - GITHUB_CLIENT_SECRET (GitHub認証を使用する場合)
-          - FIREBASE_SERVICE_ACCOUNT (FirebaseサービスアカウントJSON)
-          - FIREBASE_PROJECT_ID (FirebaseプロジェクトID)
-        
-      - description: 本番環境にデプロイ
-        command: git push origin main
-        notes: GitHub Actionsが自動的にデプロイします
+      # ユニットテストを実行
+      yarn test
 
-  - name: オプション機能拡張
-    description: 追加可能な機能
-    steps:
-      - description: インフラ用Terraformをセットアップ
-        notes: |
-          1. Terraformをインストール
-          2. プロバイダー（AWS、GCPなど）を設定
-          3. Infrastructure as Codeを定義
-          4. CI/CDパイプラインに追加
-        
-      - description: モニタリングとログを追加
-        notes: |
-          以下の追加を検討:
-          - エラートラッキング用Sentry
-          - セッションリプレイ用LogRocket
-          - アナリティクスツール
-        
-      - description: 追加の認証プロバイダーを追加
-        notes: |
-          テンプレートはより多くのOAuthプロバイダーの追加をサポート:
-          - Discord、Twitter、Facebookなど
-          - remix-authドキュメントを確認
+      # E2Eテストを実行
+      yarn test:e2e
 
-environment_variables:
-  required:
-    - name: DATABASE_URL
-      description: PostgreSQL接続文字列
-      example: postgresql://postgres:postgres@localhost:5432/remixapp_dev
-    
-    - name: SESSION_SECRET
-      description: セッション暗号化用シークレット
-      example: your-session-secret-change-this-in-production
-  
-  optional:
-    - name: GOOGLE_CLIENT_ID
-      description: Google OAuthクライアントID
-    
-    - name: GOOGLE_CLIENT_SECRET
-      description: Google OAuthクライアントシークレット
-    
-    - name: GITHUB_CLIENT_ID
-      description: GitHub OAuthクライアントID
-    
-    - name: GITHUB_CLIENT_SECRET
-      description: GitHub OAuthクライアントシークレット
-    
-    - name: FIREBASE_PROJECT_ID
-      description: デプロイ用FirebaseプロジェクトID
+environment:
+  - name: DATABASE_URL
+    description: PostgreSQL接続文字列
+    default: postgresql://postgres:postgres@localhost:5432/remixapp_dev
+    required: true
 
-development_commands:
-  - command: yarn dev
-    description: 開発サーバーを起動
-  
-  - command: yarn build
-    description: 本番用ビルド
-  
-  - command: yarn start
-    description: 本番サーバーを起動
-  
-  - command: yarn lint
-    description: リンターを実行
-  
-  - command: yarn test
-    description: ユニットテストを実行
-  
-  - command: yarn test:e2e
-    description: E2Eテストを実行
-  
-  - command: yarn db:generate
-    description: Prismaクライアントを生成
-  
-  - command: yarn db:push
-    description: データベーススキーマ変更をプッシュ
-  
-  - command: yarn db:migrate
-    description: マイグレーションを作成・実行
-  
-  - command: yarn db:studio
-    description: Prisma Studioを開く
+  - name: SESSION_SECRET
+    description: セッション暗号化用シークレット
+    default: your-session-secret-change-this-in-production
+    required: true
 
-troubleshooting:
-  common_issues:
-    - issue: データベース接続エラー
-      solution: |
-        1. PostgreSQLが実行中であることを確認
-        2. .envのDATABASE_URLを確認
-        3. データベースが存在することを確認
-        4. 実行: docker-compose up -d db
-    
-    - issue: 認証が動作しない
-      solution: |
-        1. .envのOAuth認証情報を確認
-        2. コールバックURLが一致することを確認
-        3. OAuthアプリが正しく設定されていることを確認
-        4. ブラウザのネットワークタブでエラーを確認
-    
-    - issue: ビルドが失敗する
-      solution: |
-        1. TypeScriptエラーを確認
-        2. すべてのインポートが正しいことを確認
-        3. 実行: yarn typecheck
-        4. 不足している依存関係を確認
-    
-    - issue: テストが失敗する
-      solution: |
-        1. テストデータベースが実行中であることを確認
-        2. テスト環境変数を確認
-        3. テストを個別に実行して問題を特定
-        4. 実行間でテストデータをクリア
+  - name: GOOGLE_CLIENT_ID
+    description: Google OAuthクライアントID
+    required: false
 
-next_steps:
-  - description: ニーズに合わせてテンプレートをカスタマイズ
-    tasks:
-      - データモデル用にtodoスキーマを変更
-      - 認証プロバイダーを追加
-      - UIデザインをカスタマイズ
-      - 追加のルートと機能を追加
-  
-  - description: 本番環境にデプロイ
-    tasks:
-      - 本番データベースをセットアップ
-      - 本番環境変数を設定
-      - モニタリングとログを設定
-      - カスタムドメインを追加
-  
-  - description: スケールと最適化
-    tasks:
-      - キャッシュ戦略を追加
-      - エラーバウンダリを実装
-      - パフォーマンスモニタリングを追加
-      - 静的アセット用CDNを検討
+  - name: GOOGLE_CLIENT_SECRET
+    description: Google OAuthクライアントシークレット
+    required: false
+
+  - name: GITHUB_CLIENT_ID
+    description: GitHub OAuthクライアントID
+    required: false
+
+  - name: GITHUB_CLIENT_SECRET
+    description: GitHub OAuthクライアントシークレット
+    required: false
+
+  - name: FIREBASE_PROJECT_ID
+    description: デプロイ用FirebaseプロジェクトID
+    required: false
+
+commands:
+  dev: yarn dev
+  build: yarn build
+  start: yarn start
+  test: yarn test
+  lint: yarn lint
