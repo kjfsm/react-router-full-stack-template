@@ -6,6 +6,9 @@
     "useIgnoreFile": true,
     "defaultBranch": "main"
   },
+  "files": {
+    "ignore": ["app/components/ui/**/**"]
+  },
   "organizeImports": {
     "enabled": true
   },
