@@ -8,14 +8,6 @@ set -e
 echo "🎭 Starting Playwright tests with remote server..."
 echo "🎭 リモートサーバーでPlaywrightテストを開始しています..."
 
-# Check if dev server is running
-# 開発サーバーが起動しているかチェック
-if ! curl -f http://localhost:3000 >/dev/null 2>&1; then
-    echo "❌ Dev server is not running. Please run 'yarn dev' first."
-    echo "❌ 開発サーバーが起動していません。先に 'yarn dev' を実行してください。"
-    exit 1
-fi
-
 # Start Playwright server
 echo "🎭 Starting Playwright server..."
 echo "🎭 Playwrightサーバーを開始しています..."
