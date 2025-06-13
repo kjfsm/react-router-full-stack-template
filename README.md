@@ -125,9 +125,20 @@ yarn test
 # E2Eテストを実行（開発サーバーが動作している必要があります）
 yarn test:e2e
 
-# Playwrightブラウザをインストール（初回のみ）
+# DockerでE2Eテストを実行（推奨）
+yarn test:e2e:docker
+
+# Playwrightブラウザをインストール（ローカル実行の場合のみ）
 npx playwright install
 ```
+
+### Docker を使用したテスト
+
+このテンプレートはPlaywrightテストをDockerで実行することを推奨しています：
+
+- **CI環境**: 自動的にDockerを使用
+- **DevContainer**: `yarn test:e2e:docker` コマンドを使用
+- **ローカル開発**: Dockerが利用可能な場合は `yarn test:e2e:docker` を使用
 
 ## 🚀 デプロイメント
 

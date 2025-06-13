@@ -44,9 +44,6 @@ jobs:
       - name: 🔬 Lint
         run: yarn lint
 
-      - name: 🎭 Playwright install
-        run: npx playwright install --with-deps chromium
-
       - name: 🏗 Build
         run: yarn build
         env:
@@ -64,11 +61,26 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
 
-      - name: 🎭 Playwright tests
-        run: yarn test:e2e
+      - name: 🎭 Start dev server for E2E tests
+        run: yarn dev &
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
           SESSION_SECRET: test-session-secret
+
+      - name: 🎭 Wait for dev server
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done' || exit 1
+
+      - name: 🎭 Playwright tests with Docker
+        run: |
+          docker run --rm \
+            --network host \
+            -v ${{ github.workspace }}:/workspace \
+            -w /workspace \
+            -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/remixapp_test \
+            -e SESSION_SECRET=test-session-secret \
+            mcr.microsoft.com/playwright:v1.40.0-jammy \
+            sh -c "npm install && npx playwright test --reporter=list"
 
       - name: 📊 Upload test results
         uses: actions/upload-artifact@v4

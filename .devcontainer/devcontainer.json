@@ -59,6 +59,6 @@
       "label": "Prisma Studio"
     }
   },
-  "postCreateCommand": "yarn install && yarn db:generate",
+  "postCreateCommand": "yarn install && yarn db:generate && chmod +x .devcontainer/run-playwright.sh",
   "remoteUser": "node"
 }
