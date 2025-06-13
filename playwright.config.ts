@@ -2,10 +2,10 @@ import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Playwright configuration for E2E testing
- * 
+ *
  * This configuration uses a Docker-based Playwright server for consistent
  * cross-environment testing without including Playwright in production builds.
- * 
+ *
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
