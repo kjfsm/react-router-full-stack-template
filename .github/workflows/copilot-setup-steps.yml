@@ -91,10 +91,10 @@ jobs:
             --workdir /home/pwuser \
             --user pwuser \
             mcr.microsoft.com/playwright:v1.53.0-noble \
-            /bin/sh -c "yarn -y playwright@1.53.0 run-server --port 3000 --host 0.0.0.0"
+            /bin/sh -c "yarn playwright run-server --port 3000 --host 0.0.0.0"
 
           # Wait for Playwright server to be ready
-          timeout 30 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null; do sleep 1; done'
+          timeout 30 bash -c 'until curl -f http://localhost:3000/ 2>/dev/null; do sleep 1; done'
 
           echo "✅ Playwright server is ready at ws://127.0.0.1:3000/"
 
