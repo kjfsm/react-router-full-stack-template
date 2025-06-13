@@ -39,7 +39,7 @@ This directory contains Terraform configuration for deploying the infrastructure
    ```bash
    # Copy example variables file
    cp terraform.tfvars.example terraform.tfvars
-   
+
    # Edit with your values
    vim terraform.tfvars
    ```

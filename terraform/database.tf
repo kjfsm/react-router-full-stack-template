@@ -6,7 +6,7 @@ resource "google_sql_database_instance" "main" {
 
   settings {
     tier = var.database_tier
-    
+
     backup_configuration {
       enabled    = true
       start_time = "03:00"

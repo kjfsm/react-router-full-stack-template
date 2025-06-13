@@ -31,7 +31,7 @@ Remixを使用したモダンで本格的なフルスタックテンプレート
 
 ### 前提条件
 
-- Node.js 18+ 
+- Node.js 18+
 - Docker と Docker Compose
 - Git
 
@@ -188,7 +188,7 @@ yarn playwright:server:stop
    ```bash
    # Firebase CLIをインストール
    npm install -g firebase-tools
-   
+
    # ログインして初期化
    firebase login
    firebase init
