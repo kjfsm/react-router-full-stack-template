@@ -11,7 +11,8 @@
     "format": "biome format . --write",
     "start": "remix-serve ./build/index.js",
     "typecheck": "tsc",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
     "test:e2e": "playwright test",
     "test:e2e:docker": "./.devcontainer/run-playwright.sh",
     "db:generate": "prisma generate",
@@ -48,8 +49,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
-    "@playwright/test": "^1.41.2",
+    "@biomejs/biome": "1.9.4",
     "@remix-run/dev": "^2.5.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
