@@ -11,23 +11,23 @@ name: "Copilot Setup Steps"
       - .github/workflows/copilot-setup-steps.yml
 
 jobs:
-  # The job MUST be called `copilot-setup-steps` or it will not be picked up
-  # by Copilot.
+  # ジョブの名前は `copilot-setup-steps` である必要があります。
+  # そうでなければCopilotによって認識されません。
   copilot-setup-steps:
     runs-on: ubuntu-latest
-    # Set the permissions to the lowest permissions possible needed for your
-    # steps. Copilot will be given its own token for its operations.
+    # 必要な最低限の権限を設定します。
+    # Copilotは独自のトークンを持ちます。
     permissions:
-      # If you want to clone the repository as part of your setup steps, for
-      # example to install dependencies, you'll need the `contents: read`
-      # permission. If you don't clone the repository in your setup steps,
-      # Copilot will do this for you automatically after the steps complete.
+      # セットアップステップでリポジトリをクローンする場合は
+      # `contents: read` 権限が必要です。
+      # セットアップステップでリポジトリをクローンしない場合は、
+      # ステップ完了後にCopilotが自動的に行います。
       contents: read
     env:
       COPILOT_AGENT_FIREWALL_ALLOW_LIST_ADDITIONS: |
         checkpoint.prisma.io
 
-    # Docker services for database and testing
+    # データベースとテスト用のDockerサービス
     services:
       postgres:
         image: postgres:15-alpine
@@ -43,22 +43,22 @@ jobs:
         ports:
           - 5432:5432
 
-    # You can define any steps you want, and they will run before the agent
-    # starts. If you do not check out your code, Copilot will do this for you.
+    # 任意のステップを定義でき、エージェント開始前に実行されます。
+    # コードをチェックアウトしない場合、Copilotが自動的に行います。
     steps:
-      - name: Checkout code
+      - name: コードをチェックアウト
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Node.jsをセットアップ
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "yarn"
 
-      - name: Install dependencies
+      - name: 依存関係をインストール
         run: yarn install --frozen-lockfile
 
-      - name: Setup environment file
+      - name: 環境ファイルをセットアップ
         run: |
           cp .env.example .env
           echo "DATABASE_URL=$DATABASE_URL" >> .env
@@ -68,18 +68,18 @@ jobs:
             postgresql://postgres:postgres@localhost:5432/remixapp_dev
           SESSION_SECRET: test-session-secret
 
-      - name: Generate Prisma client
+      - name: Prismaクライアントを生成
         run: yarn db:generate
 
-      - name: Push database schema
+      - name: データベーススキーマをプッシュ
         run: yarn db:push
         env:
           DATABASE_URL: >-
             postgresql://postgres:postgres@localhost:5432/remixapp_dev
 
-      - name: Setup Playwright Server
+      - name: Playwrightサーバーをセットアップ
         run: |
-          # Start Playwright server
+          # Playwrightサーバーを開始
           docker run -d \
             --name playwright-server \
             --network="host" \
@@ -90,16 +90,16 @@ jobs:
             mcr.microsoft.com/playwright:v1.53.0-noble \
             /bin/sh -c "npx -y playwright@1.53.0 run-server --port 3001 --host 0.0.0.0"
 
-          # Wait for server readiness
+          # サーバーの準備完了を待機
           timeout 60 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; do sleep 1; done'
           
-          echo "✅ Playwright server is ready at ws://127.0.0.1:3001/"
+          echo "✅ Playwrightサーバーの準備完了: ws://127.0.0.1:3001/"
 
-      - name: Setup Playwright environment
+      - name: Playwright環境をセットアップ
         run: |
           echo "PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3001/" >> $GITHUB_ENV
 
-      - name: Build application
+      - name: アプリケーションをビルド
         run: yarn build
         env:
           DATABASE_URL: >-

@@ -17,13 +17,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     failureRedirect: "/login",
   });
 
-  // TODO: Enable when Prisma client is generated
+  // TODO: Prismaクライアント生成後に有効化
   // const todos = await prisma.todo.findMany({
   //   where: { userId: user.id },
   //   orderBy: { createdAt: "desc" },
   // });
 
-  const todos: Todo[] = []; // Mock empty array for now
+  const todos: Todo[] = []; // 現在はモックの空配列
 
   return json({ user, todos } as { user: User; todos: Todo[] });
 };
@@ -45,7 +45,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         return json({ error: "Title is required" }, { status: 400 });
       }
 
-      // TODO: Enable when Prisma client is generated
+      // TODO: Prismaクライアント生成後に有効化
       // await prisma.todo.create({
       //   data: {
       //     title: title.trim(),
@@ -66,7 +66,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         return json({ error: "Invalid todo ID" }, { status: 400 });
       }
 
-      // TODO: Enable when Prisma client is generated
+      // TODO: Prismaクライアント生成後に有効化
       // await prisma.todo.update({
       //   where: { id, userId: user.id },
       //   data: { completed: !completed },
@@ -82,7 +82,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         return json({ error: "Invalid todo ID" }, { status: 400 });
       }
 
-      // TODO: Enable when Prisma client is generated
+      // TODO: Prismaクライアント生成後に有効化
       // await prisma.todo.delete({
       //   where: { id, userId: user.id },
       // });

@@ -5,9 +5,9 @@ test.describe("Todoアプリ", () => {
     await page.goto("/login");
 
     // ログインページが正しく読み込まれるかチェック
-    await expect(page.locator("h2")).toContainText("Sign in to your account");
+    await expect(page.locator("h2")).toContainText("アカウントにサインイン");
     await expect(
-      page.getByText("Welcome to the Remix Full Stack Template")
+      page.getByText("Remix フルスタックテンプレートへようこそ")
     ).toBeVisible();
   });
 
@@ -18,10 +18,10 @@ test.describe("Todoアプリ", () => {
 
     // 認証環境変数がない場合、設定メッセージを表示
     await expect(
-      page.getByText("No authentication providers configured")
+      page.getByText("認証プロバイダーが設定されていません")
     ).toBeVisible();
     await expect(
-      page.getByText("Please set up your environment variables")
+      page.getByText("GoogleまたはGitHubのOAuth用環境変数を設定してください")
     ).toBeVisible();
   });
 
@@ -38,7 +38,7 @@ test.describe("Todoアプリ", () => {
     await expect(page).toHaveURL("/login");
 
     // ホームに戻る
-    await page.getByRole("link", { name: "← Back to home" }).click();
+    await page.getByRole("link", { name: "← ホームに戻る" }).click();
     await expect(page).toHaveURL("/");
   });
 
@@ -49,6 +49,6 @@ test.describe("Todoアプリ", () => {
 
     // ログインページにリダイレクトする
     await expect(page).toHaveURL("/login");
-    await expect(page.locator("h2")).toContainText("Sign in to your account");
+    await expect(page.locator("h2")).toContainText("アカウントにサインイン");
   });
 });

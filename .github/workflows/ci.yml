@@ -26,54 +26,54 @@ jobs:
           - 5432:5432
 
     steps:
-      - name: 🛑 Cancel Previous Runs
+      - name: 🛑 前回の実行をキャンセル
         uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: ⬇️ Checkout repo
+      - name: ⬇️ リポジトリをチェックアウト
         uses: actions/checkout@v4
 
-      - name: ⎔ Setup node
+      - name: ⎔ Node.jsをセットアップ
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: yarn
 
-      - name: 📥 Download deps
+      - name: 📥 依存関係をダウンロード
         run: yarn install --frozen-lockfile
 
-      - name: 🔬 Lint
+      - name: 🔬 リント実行
         run: yarn lint
 
-      - name: 🏗 Build
+      - name: 🏗 ビルド実行
         run: yarn build
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
 
-      - name: 🌱 Database setup
+      - name: 🌱 データベースセットアップ
         run: |
           yarn db:push
           yarn db:generate
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
 
-      - name: ⚡ Unit tests
+      - name: ⚡ ユニットテスト実行
         run: yarn test
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
 
-      - name: 🎭 Start dev server for E2E tests
+      - name: 🎭 E2Eテスト用開発サーバーを開始
         run: yarn dev &
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
           SESSION_SECRET: test-session-secret
 
-      - name: 🎭 Wait for dev server
+      - name: 🎭 開発サーバーの起動を待機
         run: |
           timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done' || exit 1
 
-      - name: 🎭 E2E tests with Docker Playwright
+      - name: 🎭 Docker PlaywrightでE2Eテスト実行
         run: |
-          # Start Playwright server
+          # Playwrightサーバーを開始
           docker run -d \
             --name playwright-server \
             --network="host" \
@@ -84,19 +84,19 @@ jobs:
             mcr.microsoft.com/playwright:v1.53.0-noble \
             /bin/sh -c "npx -y playwright@1.53.0 run-server --port 3001 --host 0.0.0.0"
 
-          # Wait for server readiness
+          # サーバーの準備完了を待機
           timeout 60 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; do sleep 1; done'
           
-          # Run tests
+          # テストを実行
           PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3001/ yarn playwright test --reporter=list
           
-          # Cleanup
+          # クリーンアップ
           docker stop playwright-server || true
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
           SESSION_SECRET: test-session-secret
 
-      - name: 📊 Upload test results
+      - name: 📊 テスト結果をアップロード
         uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,7 +1,7 @@
-// Test setup file for Vitest
+// Vitest用テストセットアップファイル
 import { expect, vi } from "vitest";
 
-// Mock fetch if needed
+// 必要に応じてfetchをモック
 global.fetch = vi.fn();
 
-// Setup any global test utilities here
+// グローバルテストユーティリティをここでセットアップ

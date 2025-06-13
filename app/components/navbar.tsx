@@ -13,7 +13,7 @@ export function Navbar({ user }: NavbarProps) {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/todos" className="text-xl font-bold text-gray-900">
-              📝 Todo App
+              📝 Todo アプリ
             </Link>
           </div>
 
@@ -22,7 +22,7 @@ export function Navbar({ user }: NavbarProps) {
               {user.avatar && (
                 <img
                   src={user.avatar}
-                  alt={user.name || "User avatar"}
+                  alt={user.name || "ユーザーアバター"}
                   className="h-8 w-8 rounded-full"
                 />
               )}
@@ -33,7 +33,7 @@ export function Navbar({ user }: NavbarProps) {
 
             <Form action="/logout" method="post">
               <Button variant="outline" size="sm">
-                Sign out
+                ログアウト
               </Button>
             </Form>
           </div>

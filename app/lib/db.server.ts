@@ -6,10 +6,9 @@ declare global {
   var __db__: PrismaClient;
 }
 
-// this is needed because in development we don't want to restart
-// the server with every change, but we want to make sure we don't
-// create a new connection to the DB with every change either.
-// in production we'll have a single connection to the DB.
+// これは開発環境で変更のたびにサーバーを再起動したくないが、
+// 変更のたびにDBへの新しい接続も作成したくないため必要です。
+// 本番環境では、DBへの単一の接続を持ちます。
 if (process.env.NODE_ENV === "production") {
   prisma = getClient();
 } else {
@@ -22,7 +21,7 @@ if (process.env.NODE_ENV === "production") {
 function getClient() {
   const { DATABASE_URL } = process.env;
   if (!DATABASE_URL) {
-    throw new Error("DATABASE_URL is required");
+    throw new Error("DATABASE_URLが必要です");
   }
 
   const databaseUrl = new URL(DATABASE_URL);
@@ -35,7 +34,7 @@ function getClient() {
   const isReadReplicaRegion = !PRIMARY_REGION || PRIMARY_REGION === FLY_REGION;
 
   if (!isLocalHost && !isReadReplicaRegion) {
-    // 5433 is the read-replica port
+    // 5433はリードレプリカポート
     databaseUrl.port = "5433";
     databaseUrl.host = `${FLY_REGION}.${databaseUrl.host}`;
   }
@@ -50,7 +49,7 @@ function getClient() {
     },
   });
 
-  // connect eagerly
+  // 積極的に接続
   client.$connect();
 
   return client;

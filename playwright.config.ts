@@ -1,10 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * Playwright configuration for E2E testing
+ * E2Eテスト用Playwright設定
  *
- * This configuration uses a Docker-based Playwright server for consistent
- * cross-environment testing without including Playwright in production builds.
+ * この設定は、本番ビルドにPlaywrightを含めることなく、
+ * 環境間で一貫したテストを行うため、DockerベースのPlaywrightサーバーを使用します。
  *
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -16,7 +16,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    // Use Docker Playwright server via WebSocket connection
+    // WebSocket接続経由でDocker Playwrightサーバーを使用
     connectOptions: {
       wsEndpoint:
         process.env.PW_TEST_CONNECT_WS_ENDPOINT || "ws://127.0.0.1:3001/",
@@ -41,7 +41,7 @@ export default defineConfig({
       use: { ...devices["Desktop Safari"] },
     },
 
-    /* Test against mobile viewports. */
+    /* モバイルビューポートに対してテスト */
     {
       name: "Mobile Chrome",
       use: { ...devices["Pixel 5"] },
@@ -52,7 +52,7 @@ export default defineConfig({
     },
   ],
 
-  /* Run your local dev server before starting the tests */
+  /* テスト開始前にローカル開発サーバーを実行 */
   webServer: {
     command: "yarn dev",
     url: "http://localhost:3000",
