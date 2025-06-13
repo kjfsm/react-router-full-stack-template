@@ -13,15 +13,20 @@ export default defineConfig({
   use: {
     // Always use remote Playwright server via WebSocket connection
     // Only fall back to local if explicitly disabled
-    connectOptions: process.env.PW_TEST_DISABLE_REMOTE !== "true"
-      ? {
-          wsEndpoint: process.env.PW_TEST_CONNECT_WS_ENDPOINT || "ws://127.0.0.1:3000/",
-        }
-      : undefined,
+    connectOptions:
+      process.env.PW_TEST_DISABLE_REMOTE !== "true"
+        ? {
+            wsEndpoint:
+              process.env.PW_TEST_CONNECT_WS_ENDPOINT || "ws://127.0.0.1:3000/",
+          }
+        : undefined,
     // Use hostmachine for Docker remote server when in CI or Docker, localhost otherwise
-    baseURL: process.env.PW_TEST_DISABLE_REMOTE !== "true"
-      ? process.env.CI ? "http://hostmachine:3030" : "http://localhost:3030"
-      : "http://localhost:3030",
+    baseURL:
+      process.env.PW_TEST_DISABLE_REMOTE !== "true"
+        ? process.env.CI
+          ? "http://hostmachine:3030"
+          : "http://localhost:3030"
+        : "http://localhost:3030",
     trace: "on-first-retry",
   },
 
@@ -53,15 +58,16 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: process.env.PW_TEST_DISABLE_REMOTE !== "true"
-    ? {
-        command: "yarn dev",
-        url: "http://localhost:3030",
-        reuseExistingServer: !process.env.CI,
-      }
-    : {
-        command: "yarn dev",
-        url: "http://localhost:3030",
-        reuseExistingServer: !process.env.CI,
-      },
+  webServer:
+    process.env.PW_TEST_DISABLE_REMOTE !== "true"
+      ? {
+          command: "yarn dev",
+          url: "http://localhost:3030",
+          reuseExistingServer: !process.env.CI,
+        }
+      : {
+          command: "yarn dev",
+          url: "http://localhost:3030",
+          reuseExistingServer: !process.env.CI,
+        },
 });
