@@ -7,7 +7,7 @@ set -e
 
 ACTION=${1:-start}
 CONTAINER_NAME="playwright-server"
-PLAYWRIGHT_PORT=3000
+PLAYWRIGHT_PORT=3001
 
 case $ACTION in
   start)
@@ -34,7 +34,7 @@ case $ACTION in
     echo "🎭 Playwrightサーバーの準備完了を待機中..."
     
     # Wait for server to be ready
-    timeout 30 bash -c 'until curl -f http://localhost:3000/ 2>/dev/null; do sleep 1; done' || {
+    timeout 30 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null; do sleep 1; done' || {
       echo "❌ Playwright server failed to start"
       echo "❌ Playwrightサーバーの開始に失敗しました"
       exit 1

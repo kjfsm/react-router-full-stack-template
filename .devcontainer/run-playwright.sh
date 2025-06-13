@@ -13,7 +13,7 @@ echo "🎭 Starting Playwright server..."
 echo "🎭 Playwrightサーバーを開始しています..."
 
 # Check if server is already running, if not start it
-if ! curl -f http://localhost:3000/ 2>/dev/null | grep -q "Running"; then
+if ! curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; then
   ./.devcontainer/playwright-server.sh start
 else
   echo "🎭 Playwright server is already running"
@@ -34,13 +34,7 @@ trap cleanup EXIT
 echo "🎭 Running Playwright tests..."
 echo "🎭 Playwrightテストを実行しています..."
 
-export PW_TEST_CONNECT_WS_ENDPOINT="ws://127.0.0.1:3000/"
-
-# Run tests with remote connection
-echo "🎭 Running Playwright tests..."
-echo "🎭 Playwrightテストを実行しています..."
-
-export PW_TEST_CONNECT_WS_ENDPOINT="ws://127.0.0.1:3000/"
+export PW_TEST_CONNECT_WS_ENDPOINT="ws://127.0.0.1:3001/"
 
 # Run tests using the main config with local Playwright but remote browser execution
 yarn playwright test "$@"

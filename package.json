@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "remix build",
-    "dev": "PORT=3030 remix dev --manual",
+    "dev": "remix dev --manual",
     "lint": "biome check .",
     "lint:fix": "biome check . --write",
     "format": "biome format . --write",
