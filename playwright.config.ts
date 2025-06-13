@@ -11,7 +11,15 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    baseURL: "http://localhost:3000",
+    // Use remote Playwright server if environment variable is set
+    connectOptions: process.env.PW_TEST_CONNECT_WS_ENDPOINT
+      ? {
+          wsEndpoint: process.env.PW_TEST_CONNECT_WS_ENDPOINT,
+        }
+      : undefined,
+    baseURL: process.env.PW_TEST_CONNECT_WS_ENDPOINT
+      ? "http://hostmachine:3000"
+      : "http://localhost:3000",
     trace: "on-first-retry",
   },
 
@@ -43,9 +51,11 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "yarn dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.PW_TEST_CONNECT_WS_ENDPOINT
+    ? undefined
+    : {
+        command: "yarn dev",
+        url: "http://localhost:3000",
+        reuseExistingServer: !process.env.CI,
+      },
 });

@@ -118,25 +118,65 @@ OAuth認証を有効にするには、プロバイダーを設定して`.env`に
 
 ## 🧪 テスト
 
+### ユニットテスト (Vitest)
+
 ```bash
 # ユニットテストを実行
 yarn test
 
-# E2Eテストを実行（開発サーバーが動作している必要があります）
-yarn test:e2e
+# ウォッチモードでテストを実行
+yarn test:watch
+```
 
-# DockerでE2Eテストを実行（推奨）
+### E2Eテスト (Playwright)
+
+このテンプレートは**リモートPlaywrightサーバー**を使用してE2Eテストを実行します。これにより、本番環境のビルドにPlaywrightが含まれることなく、すべての環境で一貫したテスト実行が可能になります。
+
+#### ローカル開発
+
+```bash
+# 開発サーバーを開始
+yarn dev
+
+# 別のターミナルでE2Eテストを実行（推奨）
 yarn test:e2e:docker
 
-# Playwrightブラウザをインストール（ローカル実行の場合のみ）
-npx playwright install
+# または、リモートサーバーを手動管理
+yarn playwright:server:start
+yarn test:e2e:remote
+yarn playwright:server:stop
 ```
+
+#### 利用可能なテストコマンド
+
+| コマンド | 説明 |
+|---------|-------------|
+| `yarn test:e2e` | 標準のPlaywrightテストを実行（ローカルPlaywright必要） |
+| `yarn test:e2e:docker` | リモートPlaywrightサーバーでテストを実行（推奨） |
+| `yarn test:e2e:remote` | 既存のリモートサーバーに接続してテストを実行 |
+| `yarn playwright:server:start` | Playwrightサーバーを開始 |
+| `yarn playwright:server:stop` | Playwrightサーバーを停止 |
+| `yarn playwright:server:logs` | Playwrightサーバーのログを表示 |
+
+#### リモートPlaywrightサーバーの仕組み
+
+1. **Playwrightサーバー**: Dockerコンテナでポート3001で実行
+2. **WebSocket接続**: テストはws://127.0.0.1:3001/経由でサーバーに接続
+3. **ホストマシンアクセス**: `hostmachine:3000`でローカル開発サーバーにアクセス
+4. **自動管理**: CI/CD環境では自動的にサーバーの起動・停止を管理
+
+#### CI/CD環境
+
+- **GitHub Actions**: 自動的にリモートPlaywrightサーバーを使用
+- **DevContainer**: スクリプトがサーバーの起動・停止を自動管理
+- **Copilot環境**: セットアップ済みのリモートサーバーを使用
 
 ### Docker を使用したテスト
 
-このテンプレートはPlaywrightテストをDockerで実行することを推奨しています：
+このテンプレートはPlaywrightテストをリモートサーバーで実行することを推奨しています：
 
-- **CI環境**: 自動的にDockerを使用
+- **利点**: 一貫したテスト環境、本番ビルドからPlaywrightを除外、環境に依存しない実行
+- **CI環境**: 自動的にリモートサーバーを使用
 - **DevContainer**: `yarn test:e2e:docker` コマンドを使用
 - **ローカル開発**: Dockerが利用可能な場合は `yarn test:e2e:docker` を使用
 
@@ -191,7 +231,12 @@ yarn start
 | `yarn lint:fix` | リントの問題を修正 |
 | `yarn format` | コードをフォーマット |
 | `yarn test` | ユニットテストを実行 |
-| `yarn test:e2e` | E2Eテストを実行 |
+| `yarn test:e2e` | 標準のPlaywrightテストを実行 |
+| `yarn test:e2e:docker` | リモートPlaywrightサーバーでテストを実行（推奨） |
+| `yarn test:e2e:remote` | 既存のリモートサーバーに接続してテストを実行 |
+| `yarn playwright:server:start` | Playwrightサーバーを開始 |
+| `yarn playwright:server:stop` | Playwrightサーバーを停止 |
+| `yarn playwright:server:logs` | Playwrightサーバーのログを表示 |
 | `yarn typecheck` | TypeScript型チェック |
 | `yarn db:generate` | Prismaクライアントを生成 |
 | `yarn db:push` | スキーマ変更をデータベースにプッシュ |

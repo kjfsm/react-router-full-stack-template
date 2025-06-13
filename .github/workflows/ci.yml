@@ -71,16 +71,33 @@ jobs:
         run: |
           timeout 60 bash -c 'until curl -f http://localhost:3000; do sleep 1; done' || exit 1
 
-      - name: 🎭 Playwright tests with Docker
+      - name: 🎭 Start Playwright Server
         run: |
-          docker run --rm \
-            --network host \
-            -v ${{ github.workspace }}:/workspace \
-            -w /workspace \
-            -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/remixapp_test \
-            -e SESSION_SECRET=test-session-secret \
-            mcr.microsoft.com/playwright:v1.53.0-jammy \
-            sh -c "npm install && npx playwright test --reporter=list"
+          # Start Playwright server in background
+          docker run -d \
+            --name playwright-server \
+            --add-host=hostmachine:host-gateway \
+            -p 3001:3000 \
+            --rm \
+            --init \
+            --workdir /home/pwuser \
+            --user pwuser \
+            mcr.microsoft.com/playwright:v1.53.0-noble \
+            /bin/sh -c "npx -y playwright@1.53.0 run-server --port 3000 --host 0.0.0.0"
+          
+          # Wait for Playwright server to be ready
+          timeout 30 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null; do sleep 1; done'
+
+      - name: 🎭 Playwright tests with remote server
+        run: |
+          PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3001/ npx -y playwright@1.53.0 test --reporter=list
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
+          SESSION_SECRET: test-session-secret
+
+      - name: 🎭 Stop Playwright Server
+        if: always()
+        run: docker stop playwright-server || true
 
       - name: 📊 Upload test results
         uses: actions/upload-artifact@v4

@@ -1,31 +1,44 @@
 #!/bin/bash
 
-# DockerでPlaywrightテストを実行するスクリプト
-# Script to run Playwright tests with Docker
+# Script to run Playwright tests with remote server
+# リモートサーバーでPlaywrightテストを実行するスクリプト
 
 set -e
 
-echo "🎭 DockerでPlaywrightテストを開始しています..."
-echo "🎭 Starting Playwright tests with Docker..."
+echo "🎭 Starting Playwright tests with remote server..."
+echo "🎭 リモートサーバーでPlaywrightテストを開始しています..."
 
-# 開発サーバーが起動しているかチェック
 # Check if dev server is running
+# 開発サーバーが起動しているかチェック
 if ! curl -f http://localhost:3000 >/dev/null 2>&1; then
-    echo "❌ 開発サーバーが起動していません。先に 'yarn dev' を実行してください。"
     echo "❌ Dev server is not running. Please run 'yarn dev' first."
+    echo "❌ 開発サーバーが起動していません。先に 'yarn dev' を実行してください。"
     exit 1
 fi
 
-# DockerでPlaywrightテストを実行
-# Run Playwright tests with Docker
-docker run --rm \
-    --network host \
-    -v "$(pwd)":/workspace \
-    -w /workspace \
-    -e DATABASE_URL="${DATABASE_URL:-postgresql://postgres:postgres@db:5432/remixapp_dev}" \
-    -e SESSION_SECRET="${SESSION_SECRET:-dev-session-secret-change-in-production}" \
-    mcr.microsoft.com/playwright:v1.53.0-jammy  \
-    sh -c "yarn install && yarn playwright test $*"
+# Start Playwright server
+echo "🎭 Starting Playwright server..."
+echo "🎭 Playwrightサーバーを開始しています..."
+./.devcontainer/playwright-server.sh start
 
-echo "✅ Playwrightテスト完了"
+# Function to cleanup on exit
+cleanup() {
+    echo "🎭 Cleaning up Playwright server..."
+    echo "🎭 Playwrightサーバーをクリーンアップしています..."
+    ./.devcontainer/playwright-server.sh stop
+}
+
+# Set trap to cleanup on exit
+trap cleanup EXIT
+
+# Run tests with remote connection
+echo "🎭 Running Playwright tests..."
+echo "🎭 Playwrightテストを実行しています..."
+
+export PW_TEST_CONNECT_WS_ENDPOINT="ws://127.0.0.1:3000/"
+
+# Use npx to run playwright without having it as a dependency
+npx -y playwright@1.53.0 test "$@"
+
 echo "✅ Playwright tests completed"
+echo "✅ Playwrightテスト完了"

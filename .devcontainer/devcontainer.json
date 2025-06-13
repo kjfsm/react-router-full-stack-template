@@ -46,11 +46,14 @@
       }
     }
   },
-  "forwardPorts": [3000, 5432, 5555],
+  "forwardPorts": [3000, 3001, 5432, 5555],
   "portsAttributes": {
     "3000": {
       "label": "Remix App",
       "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "Playwright Server"
     },
     "5432": {
       "label": "PostgreSQL"
@@ -59,5 +62,5 @@
       "label": "Prisma Studio"
     }
   },
-  "postCreateCommand": "yarn install && yarn db:generate && chmod +x .devcontainer/run-playwright.sh"
+  "postCreateCommand": "yarn install && yarn db:generate && chmod +x .devcontainer/run-playwright.sh && chmod +x .devcontainer/playwright-server.sh"
 }
