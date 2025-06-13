@@ -7,4 +7,7 @@ export default defineConfig({
       ignoredRouteFiles: ["**/.*"],
     }),
   ],
+  server: {
+    port: 3030,
+  },
 });

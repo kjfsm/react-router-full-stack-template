@@ -77,7 +77,7 @@ jobs:
           docker run -d \
             --name playwright-server \
             --add-host=hostmachine:host-gateway \
-            -p 3001:3000 \
+            -p 3000:3000 \
             --rm \
             --init \
             --workdir /home/pwuser \
@@ -86,11 +86,44 @@ jobs:
             /bin/sh -c "npx -y playwright@1.53.0 run-server --port 3000 --host 0.0.0.0"
           
           # Wait for Playwright server to be ready
-          timeout 30 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null; do sleep 1; done'
+          timeout 30 bash -c 'until curl -f http://localhost:3000/ 2>/dev/null; do sleep 1; done'
 
       - name: 🎭 Playwright tests with remote server
         run: |
-          PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3001/ npx -y playwright@1.53.0 test --reporter=list
+          # Create temporary Playwright config for remote testing
+          cat > /tmp/playwright-ci.config.ts << 'EOF'
+          import { defineConfig, devices } from "@playwright/test";
+          
+          export default defineConfig({
+            testDir: "./tests/e2e",
+            fullyParallel: true,
+            forbidOnly: true,
+            retries: 2,
+            workers: 1,
+            reporter: "list",
+            use: {
+              connectOptions: {
+                wsEndpoint: "ws://127.0.0.1:3000/",
+              },
+              baseURL: "http://hostmachine:3030",
+              trace: "on-first-retry",
+            },
+            projects: [
+              {
+                name: "chromium",
+                use: { ...devices["Desktop Chrome"] },
+              },
+            ],
+            webServer: {
+              command: "yarn dev",
+              url: "http://localhost:3030",
+              reuseExistingServer: false,
+            },
+          });
+          EOF
+          
+          # Run tests using environment variable to force remote connection
+          PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3000/ yarn playwright test --reporter=list
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/remixapp_test
           SESSION_SECRET: test-session-secret
