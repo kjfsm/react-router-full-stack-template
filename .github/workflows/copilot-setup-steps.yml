@@ -10,16 +10,11 @@ name: "Copilot Setup Steps"
     paths:
       - .github/workflows/copilot-setup-steps.yml
 
-env:
-  COPILOT_AGENT_FIREWALL_ALLOW_LIST_ADDITIONS: |
-    checkpoint.prisma.io
-
 jobs:
   # The job MUST be called `copilot-setup-steps` or it will not be picked up
   # by Copilot.
   copilot-setup-steps:
     runs-on: ubuntu-latest
-
     # Set the permissions to the lowest permissions possible needed for your
     # steps. Copilot will be given its own token for its operations.
     permissions:
@@ -28,6 +23,9 @@ jobs:
       # permission. If you don't clone the repository in your setup steps,
       # Copilot will do this for you automatically after the steps complete.
       contents: read
+    env:
+      COPILOT_AGENT_FIREWALL_ALLOW_LIST_ADDITIONS: |
+        checkpoint.prisma.io
 
     # Docker services for database and testing
     services:
