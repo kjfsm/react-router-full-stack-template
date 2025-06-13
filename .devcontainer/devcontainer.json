@@ -62,5 +62,5 @@
       "label": "Prisma Studio"
     }
   },
-  "postCreateCommand": "yarn install && yarn db:generate && chmod +x .devcontainer/run-playwright.sh && chmod +x .devcontainer/playwright-server.sh"
+  "postCreateCommand": "yarn install && yarn db:generate && chmod +x .devcontainer/playwright-server.sh"
 }

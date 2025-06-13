@@ -79,11 +79,10 @@ jobs:
 
       - name: Setup Playwright Server
         run: |
-          # Start Playwright server in background
+          # Start Playwright server
           docker run -d \
             --name playwright-server \
-            --add-host=hostmachine:host-gateway \
-            -p 3001:3001 \
+            --network="host" \
             --rm \
             --init \
             --workdir /home/pwuser \
@@ -91,9 +90,9 @@ jobs:
             mcr.microsoft.com/playwright:v1.53.0-noble \
             /bin/sh -c "npx -y playwright@1.53.0 run-server --port 3001 --host 0.0.0.0"
 
-          # Wait for Playwright server to be ready
-          timeout 30 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null; do sleep 1; done'
-
+          # Wait for server readiness
+          timeout 60 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; do sleep 1; done'
+          
           echo "✅ Playwright server is ready at ws://127.0.0.1:3001/"
 
       - name: Setup Playwright environment

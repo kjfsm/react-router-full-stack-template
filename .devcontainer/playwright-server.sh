@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script to manage Playwright Server in Docker
-# プレイライトサーバーをDocker管理するスクリプト
+# DockerでPlaywrightサーバーを管理するスクリプト
 
 set -e
 
@@ -12,7 +12,6 @@ PLAYWRIGHT_PORT=3001
 case $ACTION in
   start)
     echo "🎭 Starting Playwright Server in Docker..."
-    echo "🎭 DockerでPlaywrightサーバーを開始しています..."
     
     # Stop existing container if running
     docker stop $CONTAINER_NAME 2>/dev/null || true
@@ -30,46 +29,38 @@ case $ACTION in
       /bin/sh -c "npx -y playwright@1.53.0 run-server --port $PLAYWRIGHT_PORT --host 0.0.0.0"
     
     echo "🎭 Waiting for Playwright server to be ready..."
-    echo "🎭 Playwrightサーバーの準備完了を待機中..."
     
     # Wait for server to be ready
     for i in {1..30}; do
-      if curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; then
+      if curl -f http://localhost:$PLAYWRIGHT_PORT/ 2>/dev/null | grep -q "Running"; then
         break
       fi
       sleep 1
     done
     
     # Final check
-    if ! curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; then
+    if ! curl -f http://localhost:$PLAYWRIGHT_PORT/ 2>/dev/null | grep -q "Running"; then
       echo "❌ Playwright server failed to start"
-      echo "❌ Playwrightサーバーの開始に失敗しました"
-      echo "Server logs:"
       docker logs $CONTAINER_NAME
       exit 1
     fi
     
     echo "✅ Playwright server is ready at ws://127.0.0.1:$PLAYWRIGHT_PORT/"
-    echo "✅ Playwrightサーバーの準備完了: ws://127.0.0.1:$PLAYWRIGHT_PORT/"
     ;;
     
   stop)
     echo "🎭 Stopping Playwright Server..."
-    echo "🎭 Playwrightサーバーを停止しています..."
     docker stop $CONTAINER_NAME 2>/dev/null || true
     echo "✅ Playwright server stopped"
-    echo "✅ Playwrightサーバーを停止しました"
     ;;
     
   logs)
     echo "🎭 Showing Playwright Server logs..."
-    echo "🎭 Playwrightサーバーのログを表示..."
     docker logs -f $CONTAINER_NAME
     ;;
     
   *)
     echo "Usage: $0 {start|stop|logs}"
-    echo "使用方法: $0 {start|stop|logs}"
     exit 1
     ;;
 esac

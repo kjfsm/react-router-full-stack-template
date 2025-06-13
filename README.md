@@ -130,7 +130,7 @@ yarn test:watch
 
 ### E2Eテスト (Playwright)
 
-このテンプレートは**リモートPlaywrightサーバー**を使用してE2Eテストを実行します。これにより、本番環境のビルドにPlaywrightが含まれることなく、すべての環境で一貫したテスト実行が可能になります。
+このテンプレートは**DockerベースのPlaywrightサーバー**を使用してE2Eテストを実行します。これにより、本番環境のビルドにPlaywrightが含まれることなく、すべての環境で一貫したテスト実行が可能になります。
 
 #### ローカル開発
 
@@ -138,12 +138,13 @@ yarn test:watch
 # 開発サーバーを開始
 yarn dev
 
-# 別のターミナルでE2Eテストを実行（推奨）
-yarn test:e2e:docker
-
-# または、リモートサーバーを手動管理
+# 別のターミナルでPlaywrightサーバーを開始
 yarn playwright:server:start
-yarn test:e2e:remote
+
+# E2Eテストを実行
+yarn test:e2e
+
+# サーバーを停止
 yarn playwright:server:stop
 ```
 

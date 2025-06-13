@@ -13,7 +13,7 @@
     "typecheck": "tsc",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "test:e2e": "./.devcontainer/run-playwright.sh",
+    "test:e2e": "PW_TEST_CONNECT_WS_ENDPOINT=ws://127.0.0.1:3001/ playwright test",
     "playwright:server:start": "./.devcontainer/playwright-server.sh start",
     "playwright:server:stop": "./.devcontainer/playwright-server.sh stop",
     "playwright:server:logs": "./.devcontainer/playwright-server.sh logs",

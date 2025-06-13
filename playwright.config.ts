@@ -1,6 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
+ * Playwright configuration for E2E testing
+ * 
+ * This configuration uses a Docker-based Playwright server for consistent
+ * cross-environment testing without including Playwright in production builds.
+ * 
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
@@ -11,16 +16,11 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
-    // Always use remote Playwright server via WebSocket connection
-    // Only fall back to local if explicitly disabled
-    connectOptions:
-      process.env.PW_TEST_DISABLE_REMOTE !== "true"
-        ? {
-            wsEndpoint:
-              process.env.PW_TEST_CONNECT_WS_ENDPOINT || "ws://127.0.0.1:3001/",
-          }
-        : undefined,
-    // Use localhost for all cases since we'll use host networking
+    // Use Docker Playwright server via WebSocket connection
+    connectOptions: {
+      wsEndpoint:
+        process.env.PW_TEST_CONNECT_WS_ENDPOINT || "ws://127.0.0.1:3001/",
+    },
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
   },
@@ -53,16 +53,9 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer:
-    process.env.PW_TEST_DISABLE_REMOTE !== "true"
-      ? {
-          command: "yarn dev",
-          url: "http://localhost:3000",
-          reuseExistingServer: true,
-        }
-      : {
-          command: "yarn dev",
-          url: "http://localhost:3000",
-          reuseExistingServer: true,
-        },
+  webServer: {
+    command: "yarn dev",
+    url: "http://localhost:3000",
+    reuseExistingServer: true,
+  },
 });
