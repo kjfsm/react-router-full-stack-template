@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
 
   test-runner:
-    image: mcr.microsoft.com/playwright:v1.40.0-jammy
+    image: mcr.microsoft.com/playwright:v1.53.0-jammy
     volumes:
       - .:/workspace
     working_dir: /workspace

@@ -78,10 +78,10 @@ jobs:
       - name: Setup Playwright with Docker
         run: |
           # Pull the official Playwright Docker image
-          docker pull mcr.microsoft.com/playwright:v1.40.0-jammy
+          docker pull mcr.microsoft.com/playwright:v1.53.0-jammy
 
           # Verify Playwright is available through Docker
-          docker run --rm mcr.microsoft.com/playwright:v1.40.0-jammy \
+          docker run --rm mcr.microsoft.com/playwright:v1.53.0-jammy \
             npx playwright --version
 
       - name: Build application

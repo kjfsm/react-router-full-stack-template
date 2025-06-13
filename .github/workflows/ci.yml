@@ -79,7 +79,7 @@ jobs:
             -w /workspace \
             -e DATABASE_URL=postgresql://postgres:postgres@localhost:5432/remixapp_test \
             -e SESSION_SECRET=test-session-secret \
-            mcr.microsoft.com/playwright:v1.40.0-jammy \
+            mcr.microsoft.com/playwright:v1.53.0-jammy \
             sh -c "npm install && npx playwright test --reporter=list"
 
       - name: 📊 Upload test results
