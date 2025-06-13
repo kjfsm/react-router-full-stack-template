@@ -83,7 +83,7 @@ jobs:
         run: |
           # Start Playwright server in background
           docker run -d \
-          -p 3001:3000 \
+          -p 3001:3001 \
           --rm \
           --init \
           -it \
