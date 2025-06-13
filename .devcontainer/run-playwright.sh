@@ -25,7 +25,7 @@ docker run --rm \
     -e DATABASE_URL="${DATABASE_URL:-postgresql://postgres:postgres@db:5432/remixapp_dev}" \
     -e SESSION_SECRET="${SESSION_SECRET:-dev-session-secret-change-in-production}" \
     mcr.microsoft.com/playwright:v1.53.0-jammy  \
-    sh -c "npm install && npx playwright test $*"
+    sh -c "yarn install && yarn playwright test $*"
 
 echo "✅ Playwrightテスト完了"
 echo "✅ Playwright tests completed"
