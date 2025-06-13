@@ -10,6 +10,10 @@ name: "Copilot Setup Steps"
     paths:
       - .github/workflows/copilot-setup-steps.yml
 
+env:
+  COPILOT_AGENT_FIREWALL_ALLOW_LIST_ADDITIONS: |
+    checkpoint.prisma.io
+
 jobs:
   # The job MUST be called `copilot-setup-steps` or it will not be picked up
   # by Copilot.

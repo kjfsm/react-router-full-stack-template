@@ -3,7 +3,6 @@ services:
     image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
     volumes:
       - ./:/workspaces/remix-full-stack-template:cached
-      - node_modules_volume:/workspaces/remix-full-stack-template/node_modules
       - /var/run/docker.sock:/var/run/docker-host.sock
     environment:
       - NODE_ENV=development
@@ -61,4 +60,3 @@ services:
 volumes:
   postgres_dev_data:
   postgres_test_data:
-  node_modules_volume:
