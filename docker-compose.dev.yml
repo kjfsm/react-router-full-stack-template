@@ -29,7 +29,7 @@ services:
     restart: unless-stopped
 
   test-runner:
-    image: mcr.microsoft.com/playwright:v1.53.0-jammy
+    image: mcr.microsoft.com/playwright:v1.53.0-noble
     volumes:
       - .:/workspace
     working_dir: /workspace
@@ -42,8 +42,8 @@ services:
       - test
     command: |
       sh -c "
-        npm install &&
-        npm run test:e2e
+        yarn install &&
+        yarn run test:e2e
       "
 
   db-test:
