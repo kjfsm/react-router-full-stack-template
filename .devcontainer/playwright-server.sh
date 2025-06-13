@@ -21,8 +21,7 @@ case $ACTION in
     # Start Playwright server
     docker run -d \
       --name $CONTAINER_NAME \
-      --add-host=hostmachine:host-gateway \
-      -p $PLAYWRIGHT_PORT:$PLAYWRIGHT_PORT \
+      --network="host" \
       --rm \
       --init \
       --workdir /home/pwuser \
@@ -34,11 +33,21 @@ case $ACTION in
     echo "🎭 Playwrightサーバーの準備完了を待機中..."
     
     # Wait for server to be ready
-    timeout 30 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null; do sleep 1; done' || {
+    for i in {1..30}; do
+      if curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; then
+        break
+      fi
+      sleep 1
+    done
+    
+    # Final check
+    if ! curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; then
       echo "❌ Playwright server failed to start"
       echo "❌ Playwrightサーバーの開始に失敗しました"
+      echo "Server logs:"
+      docker logs $CONTAINER_NAME
       exit 1
-    }
+    fi
     
     echo "✅ Playwright server is ready at ws://127.0.0.1:$PLAYWRIGHT_PORT/"
     echo "✅ Playwrightサーバーの準備完了: ws://127.0.0.1:$PLAYWRIGHT_PORT/"

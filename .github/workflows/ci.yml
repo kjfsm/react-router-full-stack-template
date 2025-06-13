@@ -76,8 +76,7 @@ jobs:
           # Start Playwright server in background
           docker run -d \
             --name playwright-server \
-            --add-host=hostmachine:host-gateway \
-            -p 3001:3001 \
+            --network="host" \
             --rm \
             --init \
             --workdir /home/pwuser \
@@ -85,8 +84,23 @@ jobs:
             mcr.microsoft.com/playwright:v1.53.0-noble \
             /bin/sh -c "npx -y playwright@1.53.0 run-server --port 3001 --host 0.0.0.0"
 
-          # Wait for Playwright server to be ready
-          timeout 30 bash -c 'until curl -f http://localhost:3001/ 2>/dev/null; do sleep 1; done'
+          # Wait for Playwright server to be ready with more verbose logging
+          echo "Waiting for Playwright server to start..."
+          for i in {1..60}; do
+            if curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; then
+              echo "Playwright server is ready!"
+              break
+            fi
+            echo "Attempt $i/60: Playwright server not ready yet..."
+            sleep 2
+          done
+          
+          # Final check
+          if ! curl -f http://localhost:3001/ 2>/dev/null | grep -q "Running"; then
+            echo "Failed to start Playwright server, checking logs..."
+            docker logs playwright-server
+            exit 1
+          fi
 
       - name: 🎭 Playwright tests with remote server
         run: |
