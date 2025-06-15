@@ -1,33 +1,33 @@
-# Remix v3.2 移行ガイド
+# Remix v3 移行ガイド
 
-このプロジェクトは Remix v3.2 に向けた将来フラグ（Future Flags）を有効化しています。
+このプロジェクトは Remix v3 に向けた将来フラグ（Future Flags）を有効化しています。
 
 ## 有効化された将来フラグ
 
 ### v3_fetcherPersist
 - **概要**: フェッチャーの永続化動作を React Router v7 スタイルに変更
 - **影響**: フェッチャーがアンマウント後も持続する
-- **ドキュメント**: https://remix.run/docs/en/2.13.1/start/future-flags#v3_fetcherPersist
+- **ドキュメント**: https://remix.run/docs/en/main/start/future-flags#v3_fetcherPersist
 
 ### v3_relativeSplatPath
 - **概要**: スプラットルートの相対パス処理を変更
 - **影響**: ネストしたルートでの相対パス解決が改善
-- **ドキュメント**: https://remix.run/docs/en/2.13.1/start/future-flags#v3_relativeSplatPath
+- **ドキュメント**: https://remix.run/docs/en/main/start/future-flags#v3_relativeSplatPath
 
 ### v3_throwAbortReason
 - **概要**: 中断されたリクエストのエラー形式を変更
 - **影響**: abort reason が直接スローされる
-- **ドキュメント**: https://remix.run/docs/en/2.13.1/start/future-flags#v3_throwAbortReason
+- **ドキュメント**: https://remix.run/docs/en/main/start/future-flags#v3_throwAbortReason
 
 ### v3_singleFetch
 - **概要**: データフェッチを単一フェッチに統合
 - **影響**: パフォーマンスとウォーターフォールの改善
-- **ドキュメント**: https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch
+- **ドキュメント**: https://remix.run/docs/en/main/start/future-flags#v3_singleFetch
 
 ### v3_lazyRouteDiscovery
 - **概要**: ルート発見/マニフェスト動作を遅延読み込みに変更
 - **影響**: 初期バンドルサイズの削減
-- **ドキュメント**: https://remix.run/docs/en/2.13.1/start/future-flags#v3_lazyRouteDiscovery
+- **ドキュメント**: https://remix.run/docs/en/main/start/future-flags#v3_lazyRouteDiscovery
 
 ## 設定ファイル
 
@@ -38,7 +38,7 @@
 export default {
   ignoredRouteFiles: ["**/.*"],
   future: {
-    // v3.2対応のための将来フラグ
+    // v3に向けての将来フラグ
     v3_fetcherPersist: true,
     v3_relativeSplatPath: true, 
     v3_throwAbortReason: true,
@@ -50,14 +50,14 @@ export default {
 
 ## アップデートされたパッケージ
 
-Remix パッケージを v2.13.1 にアップデートしました：
+Remix パッケージを v2.16.8 にアップデートしました：
 
-- `@remix-run/css-bundle`: ^2.13.1
-- `@remix-run/node`: ^2.13.1
-- `@remix-run/react`: ^2.13.1
-- `@remix-run/serve`: ^2.13.1
-- `@remix-run/server-runtime`: ^2.13.1
-- `@remix-run/dev`: ^2.13.1
+- `@remix-run/css-bundle`: ^2.16.8
+- `@remix-run/node`: ^2.16.8
+- `@remix-run/react`: ^2.16.8
+- `@remix-run/serve`: ^2.16.8
+- `@remix-run/server-runtime`: ^2.16.8
+- `@remix-run/dev`: ^2.16.8
 
 ## 移行の確認
 
@@ -84,5 +84,5 @@ yarn dev
 
 ## 参考資料
 
-- [Remix Future Flags Documentation](https://remix.run/docs/en/2.13.1/start/future-flags)
+- [Remix Future Flags Documentation](https://remix.run/docs/en/main/start/future-flags)
 - [React Router v7 Migration Guide](https://reactrouter.com/en/main/upgrading/v6)
