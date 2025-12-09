@@ -1,3 +1,4 @@
+import { Button } from "~/lib/generated/shadcn/components/ui/button";
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
 
@@ -20,6 +21,7 @@ export function Welcome() {
           </div>
         </header>
         <div className="w-full max-w-[300px] space-y-6 px-4">
+          <Button variant={"default"}>Login</Button>
           <nav className="space-y-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
             <p className="text-center text-gray-700 leading-6 dark:text-gray-200">
               What&apos;s next?
