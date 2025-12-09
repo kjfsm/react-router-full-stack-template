@@ -8,4 +8,4 @@
 
 /.pnpm-store/
 
-app/lib/generated
+app/lib/generated/prisma
