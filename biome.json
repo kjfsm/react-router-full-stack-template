@@ -7,8 +7,8 @@
     "defaultBranch": "main"
   },
   "files": {
-    "includes": ["**", "!app/lib/utils.ts"],
-    "ignoreUnknown": true
+    "includes": ["**", "!app/lib/generated"],
+    "ignoreUnknown": false
   },
   "formatter": {
     "enabled": true,
