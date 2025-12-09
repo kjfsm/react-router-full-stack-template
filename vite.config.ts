@@ -5,7 +5,7 @@ import devtoolsJson from "vite-plugin-devtools-json";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), devtoolsJson()],
+  plugins: [reactRouter(), tsconfigPaths(), tailwindcss(), devtoolsJson()],
   server: {
     host: true,
     port: 5173,
