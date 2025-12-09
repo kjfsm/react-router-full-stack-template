@@ -7,3 +7,5 @@
 /build/
 
 /.pnpm-store/
+
+app/lib/generated
