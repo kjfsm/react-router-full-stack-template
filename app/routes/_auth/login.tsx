@@ -99,8 +99,8 @@ export default function Login() {
           </Form>
         </CardContent>
         <CardFooter>
-          <Button asChild variant="ghost">
-            <Link to="/signup">新規登録</Link>
+          <Button variant="secondary" asChild>
+            <Link to="/">戻る</Link>
           </Button>
         </CardFooter>
       </Card>

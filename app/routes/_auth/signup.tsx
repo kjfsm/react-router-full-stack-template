@@ -51,10 +51,10 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-4">
-      <Card>
-        <CardHeader>新規登録</CardHeader>
-        <CardContent>
-          <Form method="post">
+      <Card className="w-[300px]">
+        <CardHeader className="text-center">新規登録</CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <Form method="post" className="flex flex-col gap-4">
             <Input type="hidden" name="intent" value="email-signup" />
             <Input
               name="name"
@@ -79,16 +79,16 @@ export default function Login() {
 
             {data?.error && <p>{data.error}</p>}
 
-            <Button>新規登録</Button>
+            <Button type="submit">新規登録</Button>
           </Form>
 
-          <Form method="post">
+          <Form method="post" className="flex flex-col gap-4">
             <Input type="hidden" name="intent" value="google" />
-            <Button>Sign in with Google</Button>
+            <Button type="submit">Googleログインで新規登録</Button>
           </Form>
         </CardContent>
         <CardFooter>
-          <Button variant={"secondary"} asChild>
+          <Button variant="secondary" asChild>
             <Link to="/">戻る</Link>
           </Button>
         </CardFooter>
