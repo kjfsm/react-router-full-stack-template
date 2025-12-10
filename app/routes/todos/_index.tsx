@@ -2,6 +2,8 @@ import { Form, redirect, useLoaderData } from "react-router";
 import { auth } from "~/lib/.server/auth";
 import { prisma } from "~/lib/.server/prisma";
 import { Button } from "~/lib/generated/shadcn/components/ui/button";
+import { Card } from "~/lib/generated/shadcn/components/ui/card";
+import { Input } from "~/lib/generated/shadcn/components/ui/input";
 import type { Route } from "./+types/_index";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -57,27 +59,33 @@ export default function Index() {
   const { todos } = useLoaderData<typeof loader>();
 
   return (
-    <div>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-4">
       <h1>Todos</h1>
 
       <Form method="post">
-        <input type="hidden" name="intent" value="add" />
-        <input name="title" placeholder="New todo" />
-        <Button>Add</Button>
+        <Input type="hidden" name="intent" value="add" />
+        <div className="flex w-full max-w-sm items-center gap-2">
+          <Input name="title" placeholder="New todo" />
+          <Button type="submit" variant="outline">
+            Add
+          </Button>
+        </div>
       </Form>
 
-      <ul>
-        {todos.map((t) => (
-          <li key={t.id}>
-            <Form method="post">
-              <input type="hidden" name="intent" value="toggle" />
-              <input type="hidden" name="id" value={t.id} />
-              <Button>{t.done ? "Undo" : "Done"}</Button>
-              {t.title}
-            </Form>
-          </li>
-        ))}
-      </ul>
+      <Card className="w-full max-w-sm p-4">
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id}>
+              <Form method="post">
+                <Input type="hidden" name="intent" value="toggle" />
+                <Input type="hidden" name="id" value={todo.id} />
+                {todo.title}
+                <Button>{todo.done ? "Undo" : "Done"}</Button>
+              </Form>
+            </li>
+          ))}
+        </ul>
+      </Card>
     </div>
   );
 }
