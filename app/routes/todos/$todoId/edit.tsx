@@ -17,6 +17,5 @@ export async function action({ request, params }: Route.ActionArgs) {
   });
   if (!todo) return null;
 
-  await prisma.todo.update({ where: { id }, data: { title } });
-  return redirect("/todos");
+  return prisma.todo.update({ where: { id }, data: { title } });
 }

@@ -9,15 +9,15 @@ export async function action({ request, params }: Route.ActionArgs) {
     throw redirect("/login");
   }
   const id = params.todoId;
+  const formData = await request.formData();
 
   const todo = await prisma.todo.findFirst({
     where: { id, userId: session.user.id },
   });
   if (!todo) return null;
 
-  await prisma.todo.update({
+  return prisma.todo.update({
     where: { id },
-    data: { done: !todo.done },
+    data: { done: formData.get("done") === "true" },
   });
-  return redirect("/todos");
 }

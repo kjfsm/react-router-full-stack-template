@@ -14,6 +14,5 @@ export async function action({ request, params }: Route.ActionArgs) {
   });
   if (!todo) return null;
 
-  await prisma.todo.delete({ where: { id } });
-  return redirect("/todos");
+  return prisma.todo.delete({ where: { id } });
 }

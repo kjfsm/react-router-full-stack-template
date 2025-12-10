@@ -92,8 +92,14 @@ export default function Index() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <fetcher.Form action={`${todo.id}/toggle`} method="post">
-                      <Button>{todo.done ? "元に戻す" : "完了"}</Button>
+                    <fetcher.Form method="post" action={`${todo.id}/toggle`}>
+                      <Button
+                        aria-label={todo.done ? "未完了にする" : "完了にする"}
+                        name="done"
+                        value={todo.done ? "false" : "true"}
+                      >
+                        {todo.done ? "元に戻す" : "完了"}
+                      </Button>
                     </fetcher.Form>
 
                     <Button
