@@ -35,22 +35,21 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   if (intent === "google") {
-    const { url } = await auth.api.signInSocial({
+    const { headers, response } = await auth.api.signInSocial({
       body: {
         provider: "google",
         callbackURL: "/todos",
       },
+      returnHeaders: true,
     });
 
-    if (!url) {
-      return data(
-        { error: "Google ログインの開始に失敗しました" },
-        { status: 500 },
-      );
-    }
+    const { url } = response;
+    if (!url)
+      return {
+        error: "Google ログインの開始に失敗しました",
+      };
 
-    // Google の認可画面へリダイレクト
-    return redirect(url);
+    return redirect(url, { headers: headers });
   }
 
   // intent 不正など

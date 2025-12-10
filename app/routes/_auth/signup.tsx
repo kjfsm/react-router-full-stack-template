@@ -36,13 +36,18 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   if (intent === "google") {
-    return auth.api.signInSocial({
+    const { headers, response } = await auth.api.signInSocial({
       body: {
         provider: "google",
-        callbackURL: "/",
+        callbackURL: "/todos",
       },
-      asResponse: true,
+      returnHeaders: true,
     });
+
+    const { url } = response;
+    if (!url) return { error: "Google ログインの開始に失敗しました" };
+
+    return redirect(url, { headers: headers });
   }
 }
 
