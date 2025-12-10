@@ -32,7 +32,7 @@ export async function action({ request }: Route.ActionArgs) {
       const errorText = await signUpResponse.text();
       return { error: `Login failed: ${errorText}` };
     }
-    return redirect("/todos");
+    return redirect("/todos", { headers: signUpResponse.headers });
   }
 
   if (intent === "google") {
