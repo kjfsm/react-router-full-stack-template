@@ -1,38 +1,32 @@
 import { useState } from "react";
-import { redirect, useFetcher, useLoaderData } from "react-router";
-import { auth } from "~/lib/.server/auth";
+import { useFetcher, useLoaderData } from "react-router";
+import { userContext } from "~/lib/.server/context";
 import { prisma } from "~/lib/.server/prisma";
 import { Button } from "~/lib/generated/shadcn/components/ui/button";
 import { Card } from "~/lib/generated/shadcn/components/ui/card";
 import { Input } from "~/lib/generated/shadcn/components/ui/input";
 import type { Route } from "./+types/_index";
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
-  if (!session?.user) {
-    throw redirect("/login");
-  }
+export async function loader({ context }: Route.LoaderArgs) {
+  const user = context.get(userContext);
 
   const todos = await prisma.todo.findMany({
-    where: { userId: session.user.id },
+    where: { userId: user.id },
     orderBy: { createdAt: "desc" },
   });
 
-  return { todos, session };
+  return { todos };
 }
 
-export async function action({ request }: Route.ActionArgs) {
-  const session = await auth.api.getSession({ headers: request.headers });
-  if (!session?.user) {
-    throw redirect("/login");
-  }
+export async function action({ request, context }: Route.ActionArgs) {
+  const user = context.get(userContext);
 
   const form = await request.formData();
   const title = form.get("title") as string;
   await prisma.todo.create({
     data: {
       title,
-      userId: session.user.id,
+      userId: user.id,
     },
   });
   return null;
