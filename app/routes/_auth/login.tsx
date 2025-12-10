@@ -62,8 +62,8 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-4">
-      <Card>
-        <CardHeader>Login</CardHeader>
+      <Card className="w-full max-w-md">
+        <CardHeader>ログイン</CardHeader>
         <CardContent className="space-y-4">
           <Form method="post" className="space-y-2">
             <Input type="hidden" name="intent" value="email" />

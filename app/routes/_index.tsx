@@ -19,8 +19,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Index() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-4">
-      <Card className="w-[300px]">
-        <CardHeader className="text-center">TODOアプリ</CardHeader>
+      <Card className="w-full max-w-sm">
+        <CardHeader className="text-center font-semibold text-2xl">
+          TODOアプリ
+        </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Button variant="outline" asChild>
             <Link to="/login">ログイン</Link>

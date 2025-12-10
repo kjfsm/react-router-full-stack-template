@@ -1,6 +1,7 @@
 import {
   Form,
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -44,19 +45,48 @@ export default function App() {
   const { session } = useLoaderData<typeof loader>();
   return (
     <>
-      <header className="mb-4 bg-gray-100 shadow-sm">
-        {session?.user ? (
-          <div className="container mx-auto flex items-center justify-between p-4">
-            <div>Logged in as {session.user.name || session.user.email}</div>
-            <div>
-              <Form method="post" action="/logout">
-                <Button type="submit">Logout</Button>
-              </Form>
-            </div>
+      <header className="border-b bg-background/30">
+        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+          <div>
+            <Link to="/" className="font-semibold text-lg">
+              TODOアプリ
+            </Link>
           </div>
-        ) : null}
+          <nav className="flex items-center gap-3">
+            {session?.user ? (
+              <>
+                <div className="text-sm">
+                  {session.user.name || session.user.email}
+                </div>
+                <Form method="post" action="/logout">
+                  <Button type="submit" variant="outline">
+                    ログアウト
+                  </Button>
+                </Form>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" asChild>
+                  <Link to="/login">ログイン</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/signup">新規登録</Link>
+                </Button>
+              </>
+            )}
+          </nav>
+        </div>
       </header>
-      <Outlet />
+
+      <main className="container mx-auto p-4">
+        <Outlet />
+      </main>
+
+      <footer className="mt-12 border-t">
+        <div className="container mx-auto px-4 py-6 text-muted-foreground text-sm">
+          © {new Date().getFullYear()} TODOアプリ
+        </div>
+      </footer>
     </>
   );
 }

@@ -3,7 +3,14 @@
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   "customizations": {
     "vscode": {
-      "extensions": ["biomejs.biome", "prisma.prisma"]
+      "extensions": [
+        "biomejs.biome",
+        "bradlc.vscode-tailwindcss",
+        "github.vscode-pull-request-github",
+        "prisma.prisma",
+        "ms-playwright.playwright",
+        "vitest.explorer"
+      ]
     }
   },
   "features": {

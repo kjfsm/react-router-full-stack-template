@@ -59,33 +59,43 @@ export default function Index() {
   const { todos } = useLoaderData<typeof loader>();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 p-4">
-      <h1>Todos</h1>
+    <div className="flex min-h-screen flex-col items-start gap-6 p-4">
+      <div className="w-full max-w-3xl">
+        <h1 className="mb-4 font-semibold text-2xl">タスク</h1>
 
-      <Form method="post">
-        <Input type="hidden" name="intent" value="add" />
-        <div className="flex w-full max-w-sm items-center gap-2">
-          <Input name="title" placeholder="New todo" />
-          <Button type="submit" variant="outline">
-            Add
-          </Button>
-        </div>
-      </Form>
+        <Form method="post" className="mb-4">
+          <Input type="hidden" name="intent" value="add" />
+          <div className="flex w-full items-center gap-2">
+            <Input name="title" placeholder="新しいタスクを追加" />
+            <Button type="submit" variant="outline">
+              追加
+            </Button>
+          </div>
+        </Form>
 
-      <Card className="w-full max-w-sm p-4">
-        <ul>
-          {todos.map((todo) => (
-            <li key={todo.id}>
-              <Form method="post">
-                <Input type="hidden" name="intent" value="toggle" />
-                <Input type="hidden" name="id" value={todo.id} />
-                {todo.title}
-                <Button>{todo.done ? "Undo" : "Done"}</Button>
-              </Form>
-            </li>
-          ))}
-        </ul>
-      </Card>
+        <Card className="w-full p-4">
+          <ul>
+            {todos.map((todo) => (
+              <li key={todo.id}>
+                <Form method="post">
+                  <Input type="hidden" name="intent" value="toggle" />
+                  <Input type="hidden" name="id" value={todo.id} />
+                  <div className="flex items-center justify-between gap-4">
+                    <div
+                      className={
+                        todo.done ? "text-muted-foreground line-through" : ""
+                      }
+                    >
+                      {todo.title}
+                    </div>
+                    <Button>{todo.done ? "元に戻す" : "完了"}</Button>
+                  </div>
+                </Form>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </div>
     </div>
   );
 }
