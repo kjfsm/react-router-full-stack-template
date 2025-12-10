@@ -1,6 +1,6 @@
 import {
+  Form,
   isRouteErrorResponse,
-  Link,
   Links,
   Meta,
   Outlet,
@@ -10,6 +10,7 @@ import {
 } from "react-router";
 import type { Route } from "./+types/root";
 import { auth } from "./lib/.server/auth";
+import { Button } from "./lib/generated/shadcn/components/ui/button";
 import styles from "./tailwind.css?url";
 
 export const links: Route.LinksFunction = () => [
@@ -43,19 +44,17 @@ export default function App() {
   const { session } = useLoaderData<typeof loader>();
   return (
     <>
-      <header>
+      <header className="mb-4 bg-gray-100 shadow-sm">
         {session?.user ? (
-          <div className="bg-gray-200 p-4 text-right">
-            Logged in as {session.user.name || session.user.email}
+          <div className="container mx-auto flex items-center justify-between p-4">
+            <div>Logged in as {session.user.name || session.user.email}</div>
+            <div>
+              <Form method="post" action="/logout">
+                <Button type="submit">Logout</Button>
+              </Form>
+            </div>
           </div>
-        ) : (
-          <Link
-            to="/auth/google"
-            className="inline-block bg-gray-200 p-4 text-right"
-          >
-            Login
-          </Link>
-        )}
+        ) : null}
       </header>
       <Outlet />
     </>

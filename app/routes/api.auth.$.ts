@@ -1,5 +1,5 @@
 import { auth } from "~/lib/.server/auth";
-import type { Route } from "./+types/auth.$";
+import type { Route } from "./+types/api.auth.$";
 
 export async function loader({ request }: Route.LoaderArgs) {
   return auth.handler(request);
