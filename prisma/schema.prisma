@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  todos         Todo[]
 
   @@unique([email])
   @@map("user")
@@ -71,4 +72,13 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Todo {
+  id        String   @id @default(cuid())
+  title     String
+  done      Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }

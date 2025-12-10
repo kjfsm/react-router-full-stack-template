@@ -1,12 +1,15 @@
 import {
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 import type { Route } from "./+types/root";
+import { auth } from "./lib/.server/auth";
 import styles from "./tailwind.css?url";
 
 export const links: Route.LinksFunction = () => [
@@ -31,8 +34,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const session = await auth.api.getSession({ headers: request.headers });
+  return { session };
+};
+
 export default function App() {
-  return <Outlet />;
+  const { session } = useLoaderData<typeof loader>();
+  return (
+    <>
+      <header>
+        {session?.user ? (
+          <div className="bg-gray-200 p-4 text-right">
+            Logged in as {session.user.name || session.user.email}
+          </div>
+        ) : (
+          <Link
+            to="/auth/google"
+            className="inline-block bg-gray-200 p-4 text-right"
+          >
+            Login
+          </Link>
+        )}
+      </header>
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
