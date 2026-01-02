@@ -12,13 +12,7 @@ export const middleware: Route.MiddlewareFunction[] = [
       throw redirect("/login");
     }
 
-    // auth の session.user の `image` は `string | null | undefined` になる場合があるため、context に渡す前に undefined を null に正規化する
-    const normalizedUser = {
-      ...user,
-      image: user.image ?? null,
-    };
-
-    context.set(userContext, normalizedUser);
+    context.set(userContext, user);
 
     return next();
   },
