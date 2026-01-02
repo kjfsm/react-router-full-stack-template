@@ -34,24 +34,6 @@ export async function action({ request }: Route.ActionArgs) {
     return redirect("/todos", { headers: response.headers });
   }
 
-  if (intent === "google") {
-    const { headers, response } = await auth.api.signInSocial({
-      body: {
-        provider: "google",
-        callbackURL: "/todos",
-      },
-      returnHeaders: true,
-    });
-
-    const { url } = response;
-    if (!url)
-      return {
-        error: "Google ログインの開始に失敗しました",
-      };
-
-    return redirect(url, { headers: headers });
-  }
-
   // intent 不正など
   return data({ error: "不正なリクエストです" }, { status: 400 });
 }
@@ -90,8 +72,7 @@ export default function Login() {
             </Button>
           </Form>
 
-          <Form method="post">
-            <Input type="hidden" name="intent" value="google" />
+          <Form method="post" action="/auth/google">
             <Button type="submit" className="w-full" variant="outline">
               Googleでログイン
             </Button>

@@ -1,20 +1,27 @@
 import { expect, test } from "@playwright/test";
 
-test("has title", async ({ page }) => {
-  await page.goto("https://playwright.dev/");
+test("ホームのカードタイトルが表示される", async ({ page }) => {
+  await page.goto("/");
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+  await expect(page.getByRole("main").getByText("TODOアプリ")).toBeVisible();
 });
 
-test("get started link", async ({ page }) => {
-  await page.goto("https://playwright.dev/");
+test("ログインリンクからログイン画面へ遷移できる", async ({ page }) => {
+  await page.goto("/");
 
-  // Click the get started link.
-  await page.getByRole("link", { name: "Get started" }).click();
+  await page
+    .getByRole("navigation")
+    .getByRole("link", { name: "ログイン" })
+    .click();
 
-  // Expects page to have a heading with the name of Installation.
   await expect(
-    page.getByRole("heading", { name: "Installation" }),
+    page
+      .getByRole("main")
+      .locator('[data-slot="card-header"]', { hasText: "ログイン" }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("main")
+      .getByRole("button", { name: "ログイン", exact: true }),
   ).toBeVisible();
 });
