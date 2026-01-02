@@ -55,6 +55,12 @@ export default function App() {
           <nav className="flex items-center gap-3">
             {session?.user ? (
               <>
+                <Button variant="ghost" asChild>
+                  <Link to="/todos">タスク</Link>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <Link to="/profile">プロフィール</Link>
+                </Button>
                 <div className="text-sm">
                   {session.user.name || session.user.email}
                 </div>
