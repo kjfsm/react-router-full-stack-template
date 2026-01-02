@@ -14,7 +14,8 @@
     "playwright:install": "playwright install --with-deps"
   },
   "dependencies": {
-    "@prisma/client": "^7.1.0",
+    "@prisma/adapter-better-sqlite3": "^7.2.0",
+    "@prisma/client": "^7.2.0",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
@@ -36,11 +37,12 @@
     "@react-router/dev": "7.10.1",
     "@react-router/remix-routes-option-adapter": "^7.10.1",
     "@tailwindcss/vite": "^4.1.17",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "dotenv": "^17.2.3",
-    "prisma": "^7.1.0",
+    "prisma": "^7.2.0",
     "react-router-auto-routes": "^0.6.1",
     "remix-flat-routes": "^0.8.5",
     "tailwindcss": "^4.1.17",
