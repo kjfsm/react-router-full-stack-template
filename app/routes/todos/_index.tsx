@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { useFetcher, useLoaderData } from "react-router";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
 import { userContext } from "~/lib/.server/context";
 import { prisma } from "~/lib/.server/prisma";
 import { Button } from "~/lib/generated/shadcn/components/ui/button";
@@ -11,8 +13,6 @@ import {
   CardTitle,
 } from "~/lib/generated/shadcn/components/ui/card";
 import { Input } from "~/lib/generated/shadcn/components/ui/input";
-import { z } from "zod";
-import { zfd } from "zod-form-data";
 import type { Route } from "./+types/_index";
 
 export async function loader({ context }: Route.LoaderArgs) {
@@ -97,7 +97,10 @@ export default function Index() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <fetcher.Form method="post" className="flex flex-col gap-3 sm:flex-row">
+          <fetcher.Form
+            method="post"
+            className="flex flex-col gap-3 sm:flex-row"
+          >
             <Input
               name="title"
               placeholder="例: デザインレビューを終わらせる"
