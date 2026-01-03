@@ -11,6 +11,8 @@ import {
   CardTitle,
 } from "~/lib/generated/shadcn/components/ui/card";
 import { Input } from "~/lib/generated/shadcn/components/ui/input";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
 import type { Route } from "./+types/_index";
 
 export async function loader({ context }: Route.LoaderArgs) {
@@ -28,7 +30,11 @@ export async function action({ request, context }: Route.ActionArgs) {
   const user = context.get(userContext);
 
   const form = await request.formData();
-  const title = form.get("title") as string;
+  const { title } = zfd
+    .formData({
+      title: zfd.text(z.string().min(1)),
+    })
+    .parse(form);
   await prisma.todo.create({
     data: {
       title,

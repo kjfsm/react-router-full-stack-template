@@ -9,15 +9,25 @@ import {
   CardHeader,
 } from "~/lib/generated/shadcn/components/ui/card";
 import { Input } from "~/lib/generated/shadcn/components/ui/input";
+import { z } from "zod";
+import { zfd } from "zod-form-data";
 import type { Route } from "./+types/login";
 
 export async function action({ request }: Route.ActionArgs) {
   const form = await request.formData();
-  const intent = form.get("intent");
+  const { intent } = zfd
+    .formData({
+      intent: zfd.text(),
+    })
+    .parse(form);
 
   if (intent === "email") {
-    const email = form.get("email") as string;
-    const password = form.get("password") as string;
+    const { email, password } = zfd
+      .formData({
+        email: zfd.text(z.string().email()),
+        password: zfd.text(z.string().min(1)),
+      })
+      .parse(form);
 
     const response = await auth.api.signInEmail({
       body: {
